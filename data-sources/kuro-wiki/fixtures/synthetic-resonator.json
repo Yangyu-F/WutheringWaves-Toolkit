@@ -1,0 +1,10 @@
+{
+  "notice": "Synthetic test fixture — not official game data",
+  "source": { "catalogueId": 1105, "name": "测试共鸣者", "rarity": 5 },
+  "expected": {
+    "id": "fixture-resonator",
+    "name": "测试共鸣者",
+    "rarity": 5,
+    "verificationStatus": "candidate"
+  }
+}

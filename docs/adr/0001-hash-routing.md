@@ -1,11 +1,11 @@
 # ADR 0001：GitHub Pages 使用 Hash Router
 
-- 状态：提议；待 Phase 0 实施时确认
+- 状态：已接受；Phase 0 已实施
 - 日期：2026-08-08
 
 ## 决策
 
-Phase 0 建议 Vue Router 使用 `createWebHashHistory()`。
+Vue Router 使用 `createWebHashHistory()`。
 
 ## 原因
 

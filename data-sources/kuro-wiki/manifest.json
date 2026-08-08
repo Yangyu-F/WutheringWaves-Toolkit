@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "primarySource": "https://wiki.kurobbs.com/mc/catalogue/",
+  "catalogues": [
+    {
+      "key": "resonators",
+      "label": "共鸣者",
+      "source": {
+        "url": "https://wiki.kurobbs.com/mc/catalogue/list?fid=1099&sid=1105",
+        "catalogueId": 1105,
+        "checkedAt": "2026-08-09"
+      },
+      "status": "candidate"
+    },
+    {
+      "key": "weapons",
+      "label": "武器",
+      "source": {
+        "url": "https://wiki.kurobbs.com/mc/catalogue/list?fid=1099&sid=1106",
+        "catalogueId": 1106,
+        "checkedAt": "2026-08-09"
+      },
+      "status": "candidate"
+    },
+    {
+      "key": "echoes",
+      "label": "声骸",
+      "source": {
+        "url": "https://wiki.kurobbs.com/mc/catalogue/list?fid=1099&sid=1107",
+        "catalogueId": 1107,
+        "checkedAt": "2026-08-09"
+      },
+      "status": "candidate"
+    },
+    {
+      "key": "sonata",
+      "label": "合鸣效果",
+      "source": {
+        "url": "https://wiki.kurobbs.com/mc/catalogue/list?fid=1099&sid=1219",
+        "catalogueId": 1219,
+        "checkedAt": "2026-08-09"
+      },
+      "status": "candidate"
+    },
+    {
+      "key": "enemies",
+      "label": "敌人",
+      "source": {
+        "url": "https://wiki.kurobbs.com/mc/catalogue/list?fid=1099&sid=1158",
+        "catalogueId": 1158,
+        "checkedAt": "2026-08-09"
+      },
+      "status": "candidate"
+    }
+  ],
+  "futureCandidates": [
+    { "key": "materials", "label": "材料", "note": "用于养成规划，待确认目录节点与字段许可。" },
+    { "key": "quests", "label": "任务", "note": "非伤害计算核心数据，仅作为后续工具候选。" },
+    {
+      "key": "exploration",
+      "label": "探索收集",
+      "note": "目录页显示其信息结构，暂不纳入 Phase 0 数据集。"
+    },
+    { "key": "guides", "label": "攻略", "note": "编辑内容与结构化资料分开管理。" }
+  ]
+}

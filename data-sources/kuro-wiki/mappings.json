@@ -1,0 +1,7 @@
+{
+  "resonators": { "target": "resonators", "reviewRequired": true },
+  "weapons": { "target": "weapons", "reviewRequired": true },
+  "echoes": { "target": "echoes", "reviewRequired": true },
+  "sonata": { "target": "sonataEffects", "reviewRequired": true },
+  "enemies": { "target": "enemies", "reviewRequired": true }
+}

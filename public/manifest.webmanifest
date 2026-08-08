@@ -1,0 +1,8 @@
+{
+  "name": "鸣潮工具箱",
+  "short_name": "鸣潮工具箱",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f4f3ed",
+  "theme_color": "#bb9f5e"
+}
