@@ -1,23 +1,30 @@
 export default {
   nav: {
-    primary: 'Primary navigation',
     home: 'Home',
     tools: 'Tools',
     data: 'Data',
-    toggle: 'Toggle sidebar',
   },
   header: {
-    context: 'Tools home',
+    context: 'Home',
     language: 'Language',
     dataVersion: 'Data version',
   },
+  footer: {
+    title: 'Disclaimer: ',
+    disclaimer:
+      'This is an unofficial fan project and is not affiliated with Kuro Games. Game data and assets belong to their respective owners; calculation results are for reference only.',
+    source: 'Primary data source: ',
+    officialWiki: 'Official Wuthering Waves Wiki',
+  },
   home: {
+    eyebrow: 'Wuthering Waves player toolkit',
     title: 'Choose a tool. Start planning.',
-    intro: 'Manage calculation plans and game data in one place.',
+    intro:
+      'Prepare combat configurations in one clear, auditable workspace—from damage planning to resonator, weapon, Echo, and Sonata data.',
     explore: 'View roadmap',
-    diagramLabel: 'Abstract resonance waveform diagram',
-    atlasTitle: 'Game catalogue',
+    atlasTitle: 'Data',
     atlasDescription: 'Browse the foundational data used by calculations.',
+    tabsLabel: 'Homepage content categories',
   },
   tools: {
     damage: {
@@ -32,6 +39,26 @@ export default {
     echoes: 'Echoes',
     sonata: 'Sonata Effects',
   },
+  template: {
+    tool: 'Tool template',
+    catalogue: 'Data template',
+    filter: 'Filters and sorting',
+    dataVersion: 'Data version',
+    ready: 'Page template ready',
+    catalogueEmpty: 'Reviewed, versioned data will appear here when it is ready.',
+    back: 'Back home',
+    workspace: 'Calculator workspace',
+    loadout: 'Loadout',
+    timeline: 'Timeline',
+    results: 'Results',
+    loadoutEmpty: 'Resonator, weapon, Echo, and Sonata configuration',
+    timelineEmpty: 'Skill and event timeline editor',
+    resultsEmpty: 'Damage breakdown and calculation results',
+    resonatorsDescription: 'Browse resonator information, stats, and skills.',
+    weaponsDescription: 'Browse weapon types, stats, and effects.',
+    echoesDescription: 'Browse Echo COST, skills, and related information.',
+    sonataDescription: 'Browse Sonata Effects, conditions, and set thresholds.',
+  },
   data: {
     eyebrow: 'VERSIONED DATA',
     title: 'Data version 2.8',
@@ -43,6 +70,6 @@ export default {
     scopeValue: 'Resonators, weapons, Echoes, and Sonata Effects',
     policy: 'Verification policy',
     policyValue: 'Candidate data must be manually reviewed before entering production datasets',
-    back: 'Back to tools',
+    back: 'Back home',
   },
 }

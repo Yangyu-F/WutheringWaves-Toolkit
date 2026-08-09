@@ -1,13 +1,26 @@
 export default {
-  nav: { primary: '主导航', home: '首页', tools: '工具', data: '资料', toggle: '展开或收起侧栏' },
-  header: { context: '工具首页', language: '语言', dataVersion: '数据版本' },
+  nav: {
+    home: '首页',
+    tools: '工具',
+    data: '资料',
+  },
+  header: { context: '首页', language: '语言', dataVersion: '数据版本' },
+  footer: {
+    title: '免责声明：',
+    disclaimer:
+      '本工具为非官方玩家项目，与库洛游戏无关。游戏资料与素材版权归其各自权利人所有，计算结果仅供参考。',
+    source: '主要资料来源：',
+    officialWiki: '鸣潮官方 Wiki',
+  },
   home: {
+    eyebrow: '鸣潮玩家工具集',
     title: '选择工具，开始规划',
-    intro: '集中管理计算方案与游戏资料。',
+    intro:
+      '从伤害方案规划到角色、武器、声骸与合鸣资料查阅，在一个清晰、可复核的工作区内完成战斗配置准备。',
     explore: '查看规划',
-    diagramLabel: '抽象共鸣波形示意图',
-    atlasTitle: '游戏图鉴',
+    atlasTitle: '资料',
     atlasDescription: '查阅计算所需的基础资料。',
+    tabsLabel: '首页内容分类',
   },
   tools: {
     damage: {
@@ -21,6 +34,26 @@ export default {
     echoes: '声骸图鉴',
     sonata: '合鸣图鉴',
   },
+  template: {
+    tool: '工具模板',
+    catalogue: '资料模板',
+    filter: '筛选与排序区域',
+    dataVersion: '适用数据版本',
+    ready: '页面模板已建立',
+    catalogueEmpty: '正式资料将在完成来源复核与版本校验后显示在这里。',
+    back: '返回首页',
+    workspace: '计算器工作区',
+    loadout: '配装',
+    timeline: '时间轴',
+    results: '结果',
+    loadoutEmpty: '角色、武器、声骸与合鸣配置区',
+    timelineEmpty: '技能与事件时间轴编辑区',
+    resultsEmpty: '伤害分解与计算结果区',
+    resonatorsDescription: '查阅角色基础信息、属性与技能资料。',
+    weaponsDescription: '查阅武器类型、面板与效果资料。',
+    echoesDescription: '查阅声骸 COST、技能与相关信息。',
+    sonataDescription: '查阅合鸣效果、触发条件与套装档位。',
+  },
   data: {
     eyebrow: '版本资料',
     title: '数据版本 2.8',
@@ -31,6 +64,6 @@ export default {
     scopeValue: '角色、武器、声骸、合鸣效果',
     policy: '验证策略',
     policyValue: '候选数据必须经过人工复核后才能进入正式数据集',
-    back: '返回工具首页',
+    back: '返回首页',
   },
 }

@@ -1,11 +1,7 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
+import logoHeaderUrl from '../../assets/logo-header.svg'
 import ToolkitIcon from '../../shared/components/ToolkitIcon.vue'
-import { usePreferencesStore } from '../../features/settings/stores/preferences'
 import { i18n } from '../../shared/i18n'
-
-const preferences = usePreferencesStore()
-const { sidebarCollapsed } = storeToRefs(preferences)
 
 const setLocale = (event: Event) => {
   i18n.global.locale.value = (event.target as HTMLSelectElement).value as 'zh-CN' | 'en'
@@ -16,17 +12,10 @@ const setLocale = (event: Event) => {
 <template>
   <header class="topbar">
     <div class="topbar-leading">
-      <button
-        class="sidebar-toggle"
-        type="button"
-        :aria-expanded="!sidebarCollapsed"
-        aria-controls="app-sidebar"
-        :aria-label="$t('nav.toggle')"
-        @click="preferences.toggleSidebar"
-      >
-        <ToolkitIcon name="menu" :size="22" />
-      </button>
-      <p>{{ $t('header.context') }}</p>
+      <RouterLink to="/" class="topbar-brand" :aria-label="$t('nav.home')">
+        <img class="topbar-brand-mark" :src="logoHeaderUrl" alt="" />
+        <strong class="topbar-brand-name">鸣潮工具箱</strong>
+      </RouterLink>
     </div>
     <div class="global-controls">
       <label class="topbar-select"
@@ -35,13 +24,11 @@ const setLocale = (event: Event) => {
           <option value="zh-CN">简体中文</option>
           <option value="en">English</option>
         </select>
+        <ToolkitIcon class="select-chevron" name="chevron" :size="13" />
       </label>
       <span class="topbar-divider" />
-      <label class="topbar-select version-select"
-        ><span>{{ $t('header.dataVersion') }}：</span
-        ><select aria-label="数据版本">
-          <option>2.8</option>
-        </select></label
+      <span class="version-display"
+        ><span>{{ $t('header.dataVersion') }}：</span><strong>2.8</strong></span
       >
     </div>
   </header>
