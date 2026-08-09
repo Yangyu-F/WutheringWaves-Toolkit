@@ -17,14 +17,26 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with: { node-version: 22, cache: npm }
       - run: npm ci
       - run: npm run build
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v4
-        with: { path: dist }
+      - name: Archive Pages artifact
+        run: >-
+          tar --dereference --hard-dereference
+          --directory dist
+          -cvf "$RUNNER_TEMP/artifact.tar"
+          --exclude=.git
+          --exclude=.github
+          .
+      - name: Upload Pages artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: github-pages
+          path: ${{ runner.temp }}/artifact.tar
+          retention-days: 1
+          if-no-files-found: error
       - name: Deploy
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
