@@ -1,70 +1,86 @@
 <script setup lang="ts">
 import ToolkitIcon from '../../../shared/components/ToolkitIcon.vue'
 
-const tools = [
-  { key: 'damage', icon: 'calculator', featured: true },
-  { key: 'material', icon: 'box', featured: false },
-  { key: 'echo', icon: 'wave', featured: false },
-] as const
+const dataEntries = ['resonators', 'weapons', 'echoes', 'sonata'] as const
 </script>
 
 <template>
   <div class="home-page">
-    <section class="hero-copy">
-      <p class="eyebrow">{{ $t('home.eyebrow') }}</p>
+    <div class="content-rail" aria-hidden="true"><span /><span /></div>
+
+    <header class="home-hero">
       <h1>{{ $t('home.title') }}</h1>
-      <p class="hero-intro">{{ $t('home.intro') }}</p>
+      <p>{{ $t('home.intro') }}</p>
+      <span class="glyph-line">⌁ ᨈ ᨊ ᨅ · ⌁ ᨆ ᨉ ᨇ</span>
+    </header>
+
+    <section class="damage-section" aria-labelledby="damage-title">
+      <div class="section-title-row">
+        <ToolkitIcon name="wave" :size="28" />
+        <div>
+          <h2 id="damage-title">{{ $t('tools.damage.name') }}</h2>
+          <p>{{ $t('tools.damage.description') }}</p>
+        </div>
+      </div>
+
+      <svg
+        class="resonance-diagram"
+        viewBox="0 0 920 250"
+        role="img"
+        :aria-label="$t('home.diagramLabel')"
+      >
+        <g class="diagram-faint">
+          <circle cx="205" cy="126" r="78" />
+          <circle cx="205" cy="126" r="48" />
+          <circle cx="675" cy="126" r="88" />
+          <circle cx="675" cy="126" r="62" />
+          <circle cx="675" cy="126" r="36" />
+          <circle cx="85" cy="126" r="24" />
+          <circle cx="520" cy="54" r="18" />
+          <circle cx="520" cy="204" r="18" />
+          <path
+            d="M205 32v188M675 20v212M85 90v72M520 24v210M760 52v144M825 74v104"
+            stroke-dasharray="3 7"
+          />
+        </g>
+        <path
+          class="diagram-line"
+          d="M15 126h75c14 0 14-12 22 0 8 12 10-23 17 0 8 27 13-43 21 0 8 47 13-80 23 0 9 78 15-49 25 0 8 43 13-29 22 0 8 22 13-13 21 0h72c10 0 11-18 18 0 8 20 11-38 20 0 8 35 12-64 21 0 9 60 16-91 27 0 10 83 18-59 28 0 9 51 15-30 25 0 9 25 13-16 22 0h435"
+        />
+        <g class="diagram-nodes">
+          <circle cx="85" cy="126" r="5" />
+          <circle cx="205" cy="126" r="5" />
+          <circle cx="520" cy="126" r="5" />
+          <circle cx="675" cy="126" r="8" />
+          <circle cx="760" cy="126" r="4" />
+          <path d="m205 42 6 6-6 6-6-6 6-6Zm470-10 7 7-7 7-7-7 7-7Zm0 170 7 7-7 7-7-7 7-7Z" />
+        </g>
+      </svg>
+
+      <span class="text-action"
+        >{{ $t('home.explore') }}<ToolkitIcon name="chevron" :size="16"
+      /></span>
     </section>
 
-    <div class="section-heading">
-      <h2>{{ $t('home.section') }}</h2>
-      <span>{{ $t('home.phase') }}</span>
-    </div>
-    <section class="tool-grid" aria-labelledby="tools-heading">
-      <article
-        v-for="(tool, index) in tools"
-        :key="tool.key"
-        class="tool-card"
-        :class="{ featured: tool.featured }"
-        :style="{ '--order': index }"
-      >
-        <div class="card-copy">
-          <span class="card-icon"><ToolkitIcon :name="tool.icon" :size="22" /></span>
-          <p class="card-kicker">{{ tool.featured ? $t('home.featured') : $t('home.planned') }}</p>
-          <h3>{{ $t(`tools.${tool.key}.name`) }}</h3>
-          <p>{{ $t(`tools.${tool.key}.description`) }}</p>
-          <span class="card-action"
-            >{{ tool.featured ? $t('home.explore') : $t('home.planned')
-            }}<ToolkitIcon name="chevron" :size="16"
-          /></span>
-        </div>
-        <div v-if="tool.featured" class="signal-art" aria-hidden="true">
-          <span class="orbit orbit-one" /><span class="orbit orbit-two" />
-          <svg viewBox="0 0 480 210" preserveAspectRatio="none">
-            <path
-              d="M0 126h55l18-52 32 99 45-142 40 132 32-86 31 60 38-29 35 18 34-71 37 117 25-46h58"
-            />
-            <path class="soft" d="M0 145c70-45 105 43 172-7s104-4 145 1 78-44 163 1" />
-          </svg>
-        </div>
-      </article>
-
-      <article class="atlas-card" :style="{ '--order': 3 }">
-        <div class="atlas-pattern" aria-hidden="true"><span /><span /><span /></div>
+    <section class="atlas-section" aria-labelledby="atlas-title">
+      <div class="section-title-row atlas-heading">
+        <ToolkitIcon name="database" :size="28" />
         <div>
-          <p class="card-kicker">DATA ATLAS</p>
-          <h3>{{ $t('home.atlasTitle') }}</h3>
+          <h2 id="atlas-title">{{ $t('home.atlasTitle') }}</h2>
           <p>{{ $t('home.atlasDescription') }}</p>
         </div>
-        <RouterLink to="/data-status" class="primary-action"
-          >{{ $t('home.atlasAction') }}<ToolkitIcon name="chevron" :size="16"
-        /></RouterLink>
-      </article>
+      </div>
+      <div class="atlas-grid">
+        <RouterLink
+          v-for="entry in dataEntries"
+          :key="entry"
+          :to="`/data-status#${entry}`"
+          class="atlas-entry"
+        >
+          <span class="atlas-icon"><ToolkitIcon :name="entry" :size="72" /></span>
+          <strong>{{ $t(`dataEntries.${entry}`) }}</strong>
+        </RouterLink>
+      </div>
     </section>
-
-    <footer class="site-footer">
-      <span>{{ $t('home.footer') }}</span
-      ><span>{{ $t('home.source') }}</span>
-    </footer>
   </div>
 </template>

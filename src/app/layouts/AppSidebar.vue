@@ -8,39 +8,32 @@ const { sidebarCollapsed } = storeToRefs(preferences)
 </script>
 
 <template>
-  <aside class="sidebar" :class="{ 'is-collapsed': sidebarCollapsed }">
+  <aside id="app-sidebar" class="sidebar" :class="{ 'is-collapsed': sidebarCollapsed }">
     <div class="brand">
-      <span class="brand-mark"><span>W</span></span>
-      <div class="brand-copy">
-        <strong>{{ $t('brand.name') }}</strong
-        ><small>{{ $t('brand.tagline') }}</small>
-      </div>
+      <svg class="brand-mark" viewBox="0 0 52 52" aria-hidden="true">
+        <path d="M26 2c2 12 12 22 24 24-12 2-22 12-24 24C24 38 14 28 2 26 14 24 24 14 26 2Z" />
+        <path d="M15 26h5l2.5-7 4 14 3.5-11 2.5 7H37" />
+        <circle cx="26" cy="26" r="17" />
+      </svg>
+      <div class="brand-copy"><strong>鸣潮工具箱</strong><small>WuWa Toolkit</small></div>
     </div>
     <nav class="sidebar-nav" :aria-label="$t('nav.primary')">
       <RouterLink to="/" class="nav-item"
         ><ToolkitIcon name="home" /><span>{{ $t('nav.home') }}</span></RouterLink
       >
       <p class="nav-label">{{ $t('nav.tools') }}</p>
-      <span class="nav-item is-muted"
+      <span class="nav-item"
         ><ToolkitIcon name="calculator" /><span>{{ $t('tools.damage.name') }}</span></span
       >
-      <span class="nav-item is-muted"
-        ><ToolkitIcon name="box" /><span>{{ $t('tools.material.name') }}</span></span
+      <p class="nav-label">{{ $t('nav.data') }}</p>
+      <RouterLink
+        v-for="entry in ['resonators', 'weapons', 'echoes', 'sonata']"
+        :key="entry"
+        :to="`/data-status#${entry}`"
+        class="nav-item"
       >
-      <span class="nav-item is-muted"
-        ><ToolkitIcon name="wave" /><span>{{ $t('tools.echo.name') }}</span></span
-      >
-      <RouterLink to="/data-status" class="nav-item"
-        ><ToolkitIcon name="database" /><span>{{ $t('nav.data') }}</span></RouterLink
-      >
+        <ToolkitIcon :name="entry" /><span>{{ $t(`dataEntries.${entry}`) }}</span>
+      </RouterLink>
     </nav>
-    <button
-      class="collapse-button"
-      type="button"
-      :aria-label="$t('nav.collapse')"
-      @click="preferences.toggleSidebar"
-    >
-      <ToolkitIcon name="chevron" /> <span>{{ $t('nav.collapse') }}</span>
-    </button>
   </aside>
 </template>

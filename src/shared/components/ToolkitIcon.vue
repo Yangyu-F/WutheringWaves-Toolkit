@@ -30,6 +30,23 @@ defineProps<{ name: string; size?: number }>()
     />
     <path v-else-if="name === 'box'" d="m4 7 8-4 8 4-8 4-8-4Zm0 0v10l8 4 8-4V7M12 11v10" />
     <path v-else-if="name === 'wave'" d="M3 12h3l2-6 4 12 3-9 2 6h4" />
+    <path v-else-if="name === 'menu'" d="M4 6h16M4 12h16M4 18h16" />
+    <path
+      v-else-if="name === 'resonators'"
+      d="M12 3c1 4.5 4.5 8 9 9-4.5 1-8 4.5-9 9-1-4.5-4.5-8-9-9 4.5-1 8-4.5 9-9Zm0 5v8M8 12h8"
+    />
+    <path
+      v-else-if="name === 'weapons'"
+      d="m5 19 4-4m6-6 4-4-1-2-2 1-4 4m-7-3 14 14M4 20l3-1-2-2-1 3Z"
+    />
+    <path
+      v-else-if="name === 'echoes'"
+      d="M12 3a9 9 0 1 0 9 9M12 6a6 6 0 1 0 6 6M12 9a3 3 0 1 0 3 3"
+    />
+    <path
+      v-else-if="name === 'sonata'"
+      d="M12 2c.8 4.8 4.2 8.2 9 10-4.8 1.8-8.2 5.2-9 10-.8-4.8-4.2-8.2-9-10 4.8-1.8 8.2-5.2 9-10Zm0 6v8M8 12h8"
+    />
     <path v-else d="M4 4h6v6H4V4Zm10 0h6v6h-6V4ZM4 14h6v6H4v-6Zm10 0h6v6h-6v-6Z" />
   </svg>
 </template>
