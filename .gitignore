@@ -4,3 +4,6 @@ dist/
 .DS_Store
 coverage/
 data-sources/**/candidates/
+data-sources/kuro-wiki/raw/
+data-sources/kuro-wiki/processed/
+data-sources/community-wikis/raw/

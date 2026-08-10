@@ -17,6 +17,9 @@
     "format:check": "prettier --check .",
     "test": "vitest run",
     "data:validate": "tsx scripts/validate-data.ts",
+    "wiki:snapshot": "tsx scripts/wiki/download-kuro-wiki.ts",
+    "wiki:process": "tsx scripts/wiki/process-kuro-wiki.ts",
+    "wiki:community-snapshot": "tsx scripts/wiki/download-community-wikis.ts",
     "wiki:candidates": "tsx scripts/wiki/normalize-candidates.ts"
   },
   "dependencies": {

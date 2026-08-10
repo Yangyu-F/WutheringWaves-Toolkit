@@ -1,0 +1,39 @@
+{
+  "caseId": "yangyang-basic-four-stage-v3.5",
+  "reviewedAt": "2026-08-10",
+  "sources": [
+    "https://wiki.biligame.com/wutheringwaves/共鸣者/秧秧",
+    "https://wikiwiki.jp/w-w/秧秧"
+  ],
+  "notes": "Lv.10 four-stage basic attack; expected values were independently expanded from the documented formula without display rounding.",
+  "input": {
+    "resonatorLevel": 90,
+    "resonanceChain": 0,
+    "weaponRefinement": 1,
+    "criticalMode": "expected",
+    "enemy": { "level": 90, "resistances": { "aero": 0.1 } },
+    "stats": {
+      "attack": 1800,
+      "criticalRate": 0.293,
+      "criticalDamageMultiplier": 1.5,
+      "aeroDamageBonus": 0.1,
+      "genericDamageBonus": 0,
+      "damageTypeBonuses": {}
+    },
+    "actions": [
+      { "id": "changtai-gongji-1", "actionId": "changtai-gongji-1", "startTimeMs": 0 },
+      { "id": "changtai-gongji-2", "actionId": "changtai-gongji-2", "startTimeMs": 400 },
+      { "id": "changtai-gongji-3", "actionId": "changtai-gongji-3", "startTimeMs": 800 },
+      { "id": "changtai-gongji-4", "actionId": "changtai-gongji-4", "startTimeMs": 1200 }
+    ]
+  },
+  "expected": {
+    "hitDamage": [
+      458.1366627467019, 610.8488836622693, 479.4405808891822, 479.4405808891822, 607.9810485277046,
+      607.9810485277046, 810.6755389313986
+    ],
+    "totalDamage": 4054.5043441741436,
+    "durationMs": 1202,
+    "dps": 3373.131733921916
+  }
+}

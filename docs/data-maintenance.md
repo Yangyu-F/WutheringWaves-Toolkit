@@ -1,26 +1,30 @@
 # 数据维护说明
 
-## Phase 0 已实现边界
+## 当前实现边界
 
-Phase 0 已建立 `data-sources/kuro-wiki/` 来源清单与映射、Zod schema、合成 fixture、候选规范化示例及 `npm run data:validate` 校验命令。它不包含真实站点抓取器，也没有经过审核的游戏数值数据。
+项目已建立 `data-sources/kuro-wiki/` 来源清单与映射、Zod schema、合成 fixture、候选规范化示例及 `npm run data:validate` 校验命令。`npm run wiki:snapshot` 可从官方 Wiki 页面使用的公开只读接口获取工具箱相关五类目录元数据和词条正文；正式版本数据仍需人工审核，不能由快照直接覆盖。
 
-- 库街区《鸣潮》WIKI 是主要资料来源。
-- 当前仓库没有获准的在线同步任务，也不把站点内部接口视为公共 API。
+- 库街区《鸣潮》WIKI 是主要资料来源；鸣潮 BWiki 与 `https://wikiwiki.jp/w-w/` 是固定社区交叉验证来源。其他社区资料只用于补足三者均缺失的机制数据。
+- 当前仓库没有 CI 在线同步任务，也不把站点前端使用的内部接口视为稳定公共 API。快照只能由维护者手动运行。
 - `data-sources/kuro-wiki/fixtures/` 当前只保存合成样例，用于验证候选数据的最小规范化与来源状态。
+- `data-sources/kuro-wiki/raw/` 保存按日期生成的目录树、共鸣者、武器、声骸、合鸣效果和敌人原始响应；该目录默认被 Git 忽略。
 - 合成样例不得被发布为游戏数据；规范化结果始终为 `candidate`。
 
 ## 当前本地验证
 
-当前可运行 `npm run data:validate` 校验资料源清单，运行 `npm run wiki:candidates` 演示合成候选数据规范化。真实候选生成与字段级差异命令留待获得自动化访问许可后实现。
+当前可运行 `npm run data:validate` 校验资料源清单，运行 `npm run wiki:candidates` 演示合成候选数据规范化，并运行 `npm run wiki:snapshot` 获取可复核的官方目录与正文快照。正文通过官方页面使用的匿名 `getEntryDetail` 只读接口取得，不读取登录令牌或 Cookie。可运行 `npm run wiki:process -- --date=YYYY-MM-DD` 生成带标题、可检索正文和原始 SHA-256 的 candidate 索引；结构化字段解析和 candidate diff 仍待后续实现。
 
-## 将来接入真实数据的门槛
+项目 backup 中已有的效果说明只作为候选资料，不构成独立验证来源。正式版本按共鸣者、武器、声骸和合鸣实体记录来源并与 BWiki、WikiWiki 交叉核对，不要求每个倍率重复记录字段级链接；任一来源缺失或数值冲突时保留候选状态并记录差异。图标资产可以独立迁移，不改变效果数据的验证状态。
 
-1. 确认自动化访问、缓存和内容再利用许可。
-2. 为 fetcher 增加限速、重试、缓存和可识别的 User-Agent。
-3. 原始响应只进入受控缓存；manifest 保存 URL、上游版本、时间和哈希。
+## 快照与正式数据之间的门槛
+
+1. 调整访问范围或频率前，重新确认自动化访问、缓存和内容再利用要求。
+2. fetcher 保持限速、重试、本地缓存；不得放入 CI 定时运行。
+3. 原始响应只进入被 Git 忽略的受控缓存；manifest 保存 URL、上游版本、时间和 SHA-256。
 4. 解析输出经人工字段级审阅，不自动覆盖已审核数据。
 5. 计算字段必须标注目标游戏版本与来源；帧数据和隐藏机制记录实测方法。
-6. schema、引用、范围和金标准测试全部通过后，才可进入 `src/data/versions/`。
+6. 主来源与指定交叉验证源冲突时保存两边的值、适用版本和裁决依据，不得静默覆盖。
+7. schema、引用、范围和金标准测试全部通过后，才可进入 `src/data/versions/`。
 
 ## 解析器边界
 
