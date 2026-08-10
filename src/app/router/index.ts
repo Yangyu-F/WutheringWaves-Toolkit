@@ -10,7 +10,7 @@ export const router = createRouter({
       meta: { titleKey: 'header.context' },
     },
     {
-      path: '/calculator',
+      path: '/tools/calculator',
       name: 'calculator',
       component: () => import('../../features/calculator/views/CalculatorTemplateView.vue'),
       meta: { titleKey: 'tools.damage.name' },

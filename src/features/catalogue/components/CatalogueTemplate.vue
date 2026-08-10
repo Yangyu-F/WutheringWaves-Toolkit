@@ -16,7 +16,7 @@ defineProps<{ titleKey: string; descriptionKey: string; icon: string }>()
     </header>
     <div class="catalogue-toolbar" aria-hidden="true">
       <span>{{ $t('template.filter') }}</span
-      ><span>{{ $t('template.dataVersion') }} 2.8</span>
+      ><span>{{ $t('template.dataVersion') }} 3.5</span>
     </div>
     <section class="template-empty">
       <ToolkitIcon :name="icon" :size="56" />

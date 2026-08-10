@@ -61,7 +61,7 @@ export default {
   },
   data: {
     eyebrow: 'VERSIONED DATA',
-    title: 'Data version 2.8',
+    title: 'Data version 3.5',
     intro:
       'Phase 0 establishes the offline data pipeline and validation rules. The deployed app never scrapes the official site at runtime.',
     primary: 'Primary source',

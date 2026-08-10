@@ -28,7 +28,7 @@ const setLocale = (event: Event) => {
       </label>
       <span class="topbar-divider" />
       <span class="version-display"
-        ><span>{{ $t('header.dataVersion') }}：</span><strong>2.8</strong></span
+        ><span>{{ $t('header.dataVersion') }}：</span><strong>3.5</strong></span
       >
     </div>
   </header>

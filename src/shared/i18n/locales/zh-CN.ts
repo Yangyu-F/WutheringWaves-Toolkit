@@ -56,7 +56,7 @@ export default {
   },
   data: {
     eyebrow: '版本资料',
-    title: '数据版本 2.8',
+    title: '数据版本 3.5',
     intro: 'Phase 0 只建立离线资料管线与验证规则，不在运行时抓取官方站点。',
     primary: '主要来源',
     primaryValue: '鸣潮官方 Wiki / 图鉴目录',

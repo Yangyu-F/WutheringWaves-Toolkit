@@ -47,7 +47,12 @@ const activeTab = ref<'tools' | 'catalogue'>('tools')
       aria-labelledby="tools-tab"
     >
       <div class="home-card-grid">
-        <RouterLink to="/calculator" class="home-entry-card">
+        <RouterLink
+          to="/tools/calculator"
+          class="home-entry-card"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <span class="home-entry-icon"><ToolkitIcon name="wave" :size="64" /></span>
           <span class="home-entry-copy">
             <strong id="damage-title">{{ $t('tools.damage.name') }}</strong>
@@ -71,6 +76,8 @@ const activeTab = ref<'tools' | 'catalogue'>('tools')
           :key="entry"
           :to="`/catalogue/${entry}`"
           class="home-entry-card"
+          target="_blank"
+          rel="noopener noreferrer"
         >
           <span class="home-entry-icon"><ToolkitIcon :name="entry" :size="64" /></span>
           <span class="home-entry-copy">
