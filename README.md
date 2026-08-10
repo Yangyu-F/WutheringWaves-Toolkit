@@ -11,6 +11,7 @@
 - [数据维护说明](docs/data-maintenance.md)：官方 WIKI 数据进入项目之前的许可、审阅与追踪要求。
 - [ADR 0001](docs/adr/0001-hash-routing.md)：GitHub Pages Hash 路由决策。
 - [ADR 0002](docs/adr/0002-offline-source-pipeline.md)：离线静态数据流程决策。
+- [ADR 0003](docs/adr/0003-estimated-timeline-semantics.md)：Phase 2 估算时序、动作重叠、闪避取消与同时间戳结算规则。
 
 ## 本地开发
 

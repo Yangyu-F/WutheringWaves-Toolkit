@@ -96,7 +96,8 @@ export default {
     addAction: '添加动作',
     hitTime: '开始时间',
     removeAction: '移除动作',
-    timingNote: '当前毫秒值仅用于建立稳定顺序；正式命中帧将在完成游戏内实测后进入 Phase 2。',
+    timingNote:
+      '当前毫秒值仅用于建立稳定顺序；Phase 2 将按伤害段数估算持续时间，并在区间内均匀分布命中。',
     enemy: '敌方参数',
     enemyLevel: '敌人等级',
     aeroResistance: '气动抗性',

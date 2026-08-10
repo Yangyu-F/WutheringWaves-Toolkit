@@ -103,7 +103,7 @@ export default {
     hitTime: 'Start time',
     removeAction: 'Remove action',
     timingNote:
-      'Current millisecond values only establish stable order. Measured hit frames enter the timeline in Phase 2.',
+      'Current millisecond values only establish stable order. Phase 2 will estimate duration from hit count and distribute hits evenly across that interval.',
     enemy: 'Enemy parameters',
     enemyLevel: 'Enemy level',
     aeroResistance: 'Aero resistance',
