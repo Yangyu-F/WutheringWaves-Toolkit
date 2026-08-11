@@ -1,0 +1,39 @@
+.effects-summary-label,
+.effects-summary-track {
+  height: 26px;
+  padding: 0;
+  color: var(--muted);
+  border: 0;
+  border-top: 3px solid #666;
+  border-bottom: 1px solid var(--border);
+  background: var(--panel);
+  font-size: 9px;
+}
+.effects-summary-label {
+  position: sticky;
+  z-index: 12;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  text-align: left;
+}
+.effects-summary-label svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  transform: rotate(180deg);
+}
+.effects-summary-label svg.is-collapsed {
+  transform: rotate(0deg);
+}
+.effects-summary-track {
+  width: 100%;
+  background: var(--canvas);
+}
+.effects-heading {
+  height: 24px;
+}

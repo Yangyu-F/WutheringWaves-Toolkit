@@ -1,0 +1,7 @@
+@import './panels/base.css';
+@import './panels/team.css';
+@import './panels/enemy.css';
+@import './panels/echoes.css';
+@import './panels/skills.css';
+@import './panels/inspector.css';
+@import './panels/results.css';

@@ -1,0 +1,49 @@
+:root {
+  color: #ededed;
+  background: #18181c;
+  font-family: Arial, 'Microsoft YaHei', sans-serif;
+  font-size: 13px;
+  line-height: 1.4;
+  --page: #18181c;
+  --header: #202024;
+  --panel: #202024;
+  --canvas: #111113;
+  --control: #29292d;
+  --border: #3a3a3f;
+  --text: #ededed;
+  --muted: #a5a5aa;
+  --danger: #d97976;
+}
+
+* {
+  box-sizing: border-box;
+  user-select: none;
+}
+html,
+body,
+#app {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+button,
+input,
+select {
+  color: inherit;
+  font: inherit;
+}
+button {
+  cursor: pointer;
+}
+.visually-hidden {
+  position: fixed;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+:focus-visible {
+  outline: 1px solid #aaa;
+  outline-offset: 1px;
+}

@@ -1,0 +1,67 @@
+.resonator-label {
+  position: sticky;
+  z-index: 40;
+  left: 0;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 8px;
+  padding: 0 9px;
+  color: var(--muted);
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  background: var(--panel);
+  text-align: left;
+}
+.resonator-label.is-selected {
+  background: #303034;
+  color: var(--text);
+}
+.resonator-label > b {
+  margin-left: auto;
+}
+.track-avatar {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  overflow: hidden;
+  place-items: center;
+  border: 1px solid var(--border);
+  background: var(--control);
+}
+.track-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.track-avatar svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+}
+.track-character {
+  min-width: 0;
+}
+.track-character strong {
+  overflow: hidden;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.track-character small {
+  display: none;
+}
+.resonator-track {
+  position: relative;
+  z-index: 0;
+  min-width: 100%;
+  overflow: visible;
+  isolation: isolate;
+  border-bottom: 1px solid var(--border);
+}
+.resonator-track:has(.timeline-action:hover) {
+  z-index: 10;
+}

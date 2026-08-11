@@ -1,8 +1,8 @@
 {
-  "name": "鸣潮工具箱",
-  "short_name": "鸣潮工具箱",
+  "name": "鸣潮伤害计算器",
+  "short_name": "鸣潮计算器",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#f4f3ed",
-  "theme_color": "#bb9f5e"
+  "background_color": "#181a1b",
+  "theme_color": "#242628"
 }

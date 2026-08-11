@@ -1,0 +1,43 @@
+.results-content {
+  height: 100%;
+  min-height: 0;
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
+}
+.result-metric,
+.result-status {
+  padding: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.result-metric small,
+.result-metric output {
+  display: block;
+}
+.result-metric small,
+.result-status {
+  color: var(--muted);
+  font-size: 10px;
+}
+.result-metric {
+  display: grid;
+  align-content: center;
+}
+.result-metric output {
+  margin-top: 4px;
+  font-size: 18px;
+}
+.result-status {
+  border-bottom: 0;
+}
+.result-status ul {
+  margin: 0;
+  padding-left: 16px;
+}
+.result-status li + li {
+  margin-top: 6px;
+}
+@media (max-width: 700px) {
+  .result-status {
+    display: block;
+  }
+}

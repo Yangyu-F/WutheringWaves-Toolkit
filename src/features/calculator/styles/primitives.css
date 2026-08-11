@@ -1,0 +1,69 @@
+.panel-shell {
+  display: grid;
+  grid-template-rows: 38px minmax(0, 1fr);
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  background: var(--panel);
+}
+.panel-shell-title {
+  display: flex;
+  height: 38px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+  font-weight: 600;
+}
+.panel-shell-content {
+  min-height: 0;
+  overflow: hidden;
+}
+.panel-shell-content > .scroll-region {
+  height: 100%;
+}
+.scroll-region {
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
+}
+.icon-button {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  place-content: center;
+  color: var(--muted);
+  border: 0;
+  background: transparent;
+}
+.icon-button:hover,
+.icon-button.is-active {
+  color: var(--text);
+  background: var(--control);
+}
+.icon-button:focus-visible {
+  outline: 1px solid #aaa;
+  outline-offset: -2px;
+}
+.icon-button svg,
+.empty-state svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+}
+.empty-state {
+  display: grid;
+  min-height: 180px;
+  place-content: center;
+  color: var(--muted);
+  text-align: center;
+}
+.empty-state svg {
+  margin: 0 auto;
+}
+.empty-state p {
+  margin: 8px 0 0;
+}

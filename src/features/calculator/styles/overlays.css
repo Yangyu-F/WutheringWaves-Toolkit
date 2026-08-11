@@ -1,0 +1,80 @@
+.product-dialog-backdrop {
+  position: fixed;
+  z-index: 20;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  background: #0009;
+}
+.product-dialog {
+  position: relative;
+  width: 300px;
+  padding: 24px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  text-align: center;
+}
+.product-dialog > img {
+  width: 48px;
+  height: 48px;
+}
+.product-dialog h2 {
+  margin: 10px 0 4px;
+  font-size: 16px;
+}
+.product-dialog p {
+  margin: 0 0 16px;
+  color: var(--muted);
+}
+.product-dialog select {
+  height: 28px;
+  border: 1px solid var(--border);
+  background: var(--control);
+}
+.dialog-close {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-content: center;
+  border: 0;
+  background: transparent;
+}
+.dialog-close svg {
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.workspace-loading,
+.project-welcome {
+  display: grid;
+  height: 100%;
+  place-content: center;
+  background: var(--page);
+  color: var(--muted);
+  text-align: center;
+}
+.project-welcome h1 {
+  margin: 6px 0;
+  color: var(--text);
+  font-size: 22px;
+}
+.project-welcome p {
+  margin: 0;
+}
+.project-welcome button {
+  margin: 16px 3px 0;
+  padding: 7px 14px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--control);
+}
+.welcome-error {
+  color: var(--danger);
+}

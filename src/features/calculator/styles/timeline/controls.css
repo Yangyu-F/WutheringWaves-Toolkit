@@ -1,0 +1,77 @@
+.timeline-editor {
+  display: grid;
+  grid-template-rows: 38px minmax(0, 1fr);
+  height: 100%;
+  overflow: hidden;
+}
+.timeline-tools {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 11px;
+  border-bottom: 1px solid var(--border);
+  background: var(--panel);
+}
+.timeline-tools > div {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-right: auto;
+}
+.timeline-tools strong {
+  font-size: 12px;
+}
+.timeline-tools span,
+.timeline-tools label {
+  color: var(--muted);
+  font-size: 10px;
+}
+.toolbar-field {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+.timeline-field {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+.timeline-tools select {
+  height: 24px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--canvas);
+}
+.timeline-tools input {
+  width: 90px;
+  vertical-align: middle;
+}
+.timeline-tools output {
+  display: inline-block;
+  min-width: 46px;
+  margin-left: 5px;
+  color: var(--text);
+  font-size: 9px;
+  text-align: right;
+}
+.fit-timeline {
+  height: 24px;
+  padding: 0 7px;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  background: var(--canvas);
+  font-size: 10px;
+}
+.fit-timeline:hover {
+  color: var(--text);
+  border-color: #666;
+}
+.timeline-tools .timeline-duration {
+  width: 54px;
+  height: 24px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--canvas);
+}

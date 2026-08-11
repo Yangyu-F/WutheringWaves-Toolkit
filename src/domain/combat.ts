@@ -1,6 +1,7 @@
 export type ElementType = 'aero'
 export type DamageType = 'basic' | 'heavy' | 'skill' | 'liberation' | 'echo'
 export type CriticalMode = 'expected' | 'critical' | 'normal'
+export type ActionExecutionMode = 'foreground' | 'detached' | 'coordinated'
 
 export interface CombatStats {
   attack: number
@@ -51,6 +52,7 @@ export interface ConditionalCombatModifiers {
 
 export interface ActionEffectDefinition extends ConditionalCombatModifiers {
   id: string
+  target?: 'self' | 'team' | 'enemy'
   trigger: 'action-start' | 'hit-after'
   hitId?: string
   durationMs: number
@@ -69,6 +71,7 @@ export interface ActionDefinition {
   damageType: DamageType
   element: ElementType
   hits: DamageHitDefinition[]
+  executionMode?: ActionExecutionMode
   passiveModifiers?: ConditionalCombatModifiers[]
   effects?: ActionEffectDefinition[]
   verificationStatus: 'reviewed-primary-source' | 'cross-checked' | 'provisional'
@@ -76,8 +79,42 @@ export interface ActionDefinition {
 
 export interface PlannedAction {
   id: string
+  resonatorSlotId?: string
   actionId: string
   startTimeMs: number
+  trimmedEndTimeMs?: number
+}
+
+export interface ActionWindow {
+  actionInstanceId: string
+  actionId: string
+  resonatorSlotId: string
+  startTimeMs: number
+  endTimeMs: number
+  naturalEndTimeMs: number
+  trimmed: boolean
+  timingSource: 'estimated' | 'measured'
+}
+
+export interface TimelineDiagnostic {
+  code: 'unknown-action' | 'invalid-trim'
+  timeMs: number
+  actionInstanceIds: string[]
+}
+
+export interface CompiledActionStart {
+  actionInstanceId: string
+  actionId: string
+  resonatorSlotId: string
+  timeMs: number
+  sequence: number
+}
+
+export interface CompiledTimeline {
+  starts: CompiledActionStart[]
+  hits: CompiledHit[]
+  windows: ActionWindow[]
+  diagnostics: TimelineDiagnostic[]
 }
 
 export interface CompiledHit {
@@ -85,6 +122,7 @@ export interface CompiledHit {
   actionInstanceId: string
   actionId: string
   actionName: string
+  resonatorSlotId: string
   damageType: DamageType
   element: ElementType
   multiplier: number
@@ -111,6 +149,21 @@ export interface DamageResult extends CompiledHit {
   breakdown: DamageBreakdown
 }
 
+export interface BuffInterval {
+  id: string
+  sourceActionId: string
+  targetTrack: 'slot-1' | 'slot-2' | 'slot-3' | 'team' | 'enemy'
+  startTimeMs: number
+  endTimeMs: number
+  stacks: number
+}
+
+export interface ResourcePoint {
+  resourceId: string
+  timeMs: number
+  value: number
+}
+
 export interface SimulationInput {
   resonatorLevel: 90
   resonanceChain: 0 | 1 | 2 | 3 | 4 | 5 | 6
@@ -126,4 +179,7 @@ export interface SimulationResult {
   totalDamage: number
   durationMs: number
   dps: number
+  timeline: Pick<CompiledTimeline, 'windows' | 'diagnostics'>
+  buffIntervals: BuffInterval[]
+  resourceCurve: ResourcePoint[]
 }

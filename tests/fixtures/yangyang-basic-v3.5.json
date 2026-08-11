@@ -22,8 +22,8 @@
     },
     "actions": [
       { "id": "changtai-gongji-1", "actionId": "changtai-gongji-1", "startTimeMs": 0 },
-      { "id": "changtai-gongji-2", "actionId": "changtai-gongji-2", "startTimeMs": 400 },
-      { "id": "changtai-gongji-3", "actionId": "changtai-gongji-3", "startTimeMs": 800 },
+      { "id": "changtai-gongji-2", "actionId": "changtai-gongji-2", "startTimeMs": 300 },
+      { "id": "changtai-gongji-3", "actionId": "changtai-gongji-3", "startTimeMs": 600 },
       { "id": "changtai-gongji-4", "actionId": "changtai-gongji-4", "startTimeMs": 1200 }
     ]
   },
@@ -33,7 +33,7 @@
       607.9810485277046, 810.6755389313986
     ],
     "totalDamage": 4054.5043441741436,
-    "durationMs": 1202,
-    "dps": 3373.131733921916
+    "durationMs": 1300,
+    "dps": 3118.849495518572
   }
 }

@@ -2,7 +2,7 @@
 
 ## 当前实现边界
 
-项目已建立 `data-sources/kuro-wiki/` 来源清单与映射、Zod schema、合成 fixture、候选规范化示例及 `npm run data:validate` 校验命令。`npm run wiki:snapshot` 可从官方 Wiki 页面使用的公开只读接口获取工具箱相关五类目录元数据和词条正文；正式版本数据仍需人工审核，不能由快照直接覆盖。
+项目已建立 `data-sources/kuro-wiki/` 来源清单与映射、Zod schema、合成 fixture、候选规范化示例及 `npm run data:validate` 校验命令。`npm run wiki:snapshot` 可从官方 Wiki 页面使用的公开只读接口获取计算器相关五类目录元数据和词条正文；正式版本数据仍需人工审核，不能由快照直接覆盖。
 
 - 库街区《鸣潮》WIKI 是主要资料来源；鸣潮 BWiki 与 `https://wikiwiki.jp/w-w/` 是固定社区交叉验证来源。其他社区资料只用于补足三者均缺失的机制数据。
 - 当前仓库没有 CI 在线同步任务，也不把站点前端使用的内部接口视为稳定公共 API。快照只能由维护者手动运行。
@@ -28,4 +28,4 @@
 
 ## 解析器边界
 
-Phase 0 没有实现官方 WIKI 富文本或组件解析器；`wiki:candidates` 只对合成 JSON 演示最小规范化，不能用于真实词条。未来解析器可从 `role-component`、`basic-component` 与 `tabs-component` 的最小公共形状开始；遇到未知组件或空内容时必须产生 warning，而不是猜测字段含义。每条新增解析规则都需要离线 fixture 和单元测试。
+当前流程已经能保存官方正文快照并提取可检索文本候选，但尚未建立可直接产出版本化机制数据的结构化富文本解析器；`wiki:candidates` 仍不能未经人工审阅用于真实词条。后续解析器可从 `role-component`、`basic-component` 与 `tabs-component` 的最小公共形状开始；遇到未知组件或空内容时必须产生 warning，而不是猜测字段含义。每条新增解析规则都需要离线 fixture 和单元测试。

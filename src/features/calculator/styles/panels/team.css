@@ -1,0 +1,56 @@
+.team-slot {
+  width: 100%;
+  margin-top: 8px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--control);
+}
+.team-slot.is-selected {
+  outline: 1px solid #888;
+}
+.team-slot.is-active {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+  gap: 8px;
+  padding: 8px;
+  text-align: left;
+}
+.team-slot.is-active > img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+}
+.team-slot strong,
+.team-slot small {
+  display: block;
+}
+.team-slot figure {
+  grid-column: 1 / 3;
+  display: flex;
+  gap: 5px;
+  margin: 0;
+}
+.team-slot figure img {
+  width: 24px;
+  height: 24px;
+  object-fit: cover;
+}
+.team-slot label select {
+  width: 48px;
+  margin-left: 5px;
+}
+.team-slot.is-empty {
+  display: flex;
+  height: 38px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 9px;
+  color: var(--muted);
+}
+.team-slot.is-empty svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+}

@@ -40,7 +40,7 @@ describe('action compiler', () => {
 
     expect(hits.map((hit) => [hit.actionInstanceId, hit.timeMs])).toEqual([
       ['earlier', 200],
-      ['earlier', 201],
+      ['earlier', 250],
       ['later', 1000],
     ])
   })

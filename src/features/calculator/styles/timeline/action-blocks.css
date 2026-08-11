@@ -1,0 +1,103 @@
+.timeline-action {
+  position: absolute;
+  height: 32px;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  touch-action: none;
+}
+.timeline-action::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -4px;
+  width: max(10px, calc(100% + 8px));
+  content: '';
+}
+.action-kept {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  height: var(--action-height);
+  padding: 0;
+  border: 1px solid #555;
+  background: var(--control);
+}
+.action-tooltip {
+  position: absolute;
+  z-index: 6;
+  top: calc(var(--action-height) + 4px);
+  left: 0;
+  display: none;
+  width: max-content;
+  max-width: 220px;
+  padding: 6px 8px;
+  color: var(--text);
+  border: 1px solid var(--border);
+  background: var(--panel);
+  text-align: left;
+  white-space: nowrap;
+}
+.action-tooltip b,
+.action-tooltip small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.action-tooltip b {
+  font-size: 11px;
+}
+.action-tooltip small {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 9px;
+}
+.timeline-action:hover,
+.timeline-action.is-selected {
+  z-index: 10;
+}
+.timeline-action:hover .action-tooltip {
+  display: block;
+}
+.timeline-action.is-selected .action-kept {
+  outline: 1px solid #aaa;
+}
+.timeline-action.is-new .action-kept {
+  animation: action-added 700ms ease-out;
+}
+@keyframes action-added {
+  0% {
+    outline: 2px solid #ddd;
+    filter: brightness(1.7);
+  }
+  100% {
+    outline-color: transparent;
+    filter: brightness(1);
+  }
+}
+.timeline-action.is-trimmed .action-kept {
+  border-style: dashed;
+}
+.trim-handle {
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  width: 8px;
+  height: var(--action-height);
+  cursor: ew-resize;
+  border: 0;
+}
+.timeline-hit {
+  position: absolute;
+  z-index: 4;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  border: 1px solid #171719;
+  background: #f0f0f0;
+  transform: translate(-50%, -50%) rotate(45deg);
+  pointer-events: none;
+}

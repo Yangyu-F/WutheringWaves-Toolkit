@@ -1,0 +1,39 @@
+.skill-library nav {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3px;
+  margin: 9px 0;
+}
+.skill-library {
+  border-bottom: 0;
+}
+.skill-library nav button {
+  height: 24px;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--control);
+  font-size: 10px;
+}
+.skill-library nav button.is-active {
+  background: #444448;
+}
+.skill-list {
+  display: grid;
+  gap: 3px;
+}
+.skill-list > button {
+  min-height: 35px;
+  padding: 5px 8px;
+  border: 0;
+  border-radius: 0;
+  background: var(--control);
+  text-align: left;
+}
+.skill-list strong,
+.skill-list small {
+  display: block;
+}
+.skill-list small {
+  color: var(--muted);
+  font-size: 9px;
+}

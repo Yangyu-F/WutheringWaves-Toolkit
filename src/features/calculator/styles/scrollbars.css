@@ -1,0 +1,35 @@
+.sidebar-mode-content,
+.inspector-content,
+.results-content,
+.scroll-region,
+.project-switcher-popover,
+.timeline-viewport {
+  scrollbar-width: thin;
+  scrollbar-color: #5a5a5e #252527;
+}
+.sidebar-mode-content::-webkit-scrollbar,
+.inspector-content::-webkit-scrollbar,
+.results-content::-webkit-scrollbar,
+.scroll-region::-webkit-scrollbar,
+.project-switcher-popover::-webkit-scrollbar,
+.timeline-viewport::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+.sidebar-mode-content::-webkit-scrollbar-track,
+.inspector-content::-webkit-scrollbar-track,
+.results-content::-webkit-scrollbar-track,
+.scroll-region::-webkit-scrollbar-track,
+.project-switcher-popover::-webkit-scrollbar-track,
+.timeline-viewport::-webkit-scrollbar-track {
+  background: #252527;
+}
+.sidebar-mode-content::-webkit-scrollbar-thumb,
+.inspector-content::-webkit-scrollbar-thumb,
+.results-content::-webkit-scrollbar-thumb,
+.scroll-region::-webkit-scrollbar-thumb,
+.project-switcher-popover::-webkit-scrollbar-thumb,
+.timeline-viewport::-webkit-scrollbar-thumb {
+  border: 2px solid #252527;
+  background: #5a5a5e;
+}

@@ -1,0 +1,16 @@
+@import './timeline/controls.css';
+@import './timeline/canvas.css';
+@import './timeline/ruler-playhead.css';
+@import './timeline/effect-summary.css';
+@import './timeline/resonator-tracks.css';
+@import './timeline/action-blocks.css';
+@import './timeline/effect-tracks.css';
+
+@media (max-width: 700px) {
+  .timeline-grid {
+    --label-width: 92px;
+  }
+  .timeline-tools label {
+    display: none;
+  }
+}
