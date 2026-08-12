@@ -14,8 +14,8 @@
 }
 .timeline-tools > div {
   display: flex;
-  align-items: baseline;
-  gap: 8px;
+  align-items: center;
+  gap: 7px;
   margin-right: auto;
 }
 .timeline-tools strong {
@@ -68,10 +68,7 @@
   background-repeat: no-repeat;
   background-position: center;
   background-size: 100% 2px;
-  cursor: grab;
-}
-.zoom-control input:active {
-  cursor: grabbing;
+  cursor: pointer;
 }
 .zoom-control input::-webkit-slider-runnable-track {
   height: 2px;
@@ -86,13 +83,9 @@
   border-radius: 0;
   background: var(--muted);
 }
-.zoom-control input:hover::-webkit-slider-thumb,
-.zoom-control input:focus-visible::-webkit-slider-thumb {
+.zoom-control input:hover::-webkit-slider-thumb {
   border-color: var(--accent-hover);
   background: var(--accent);
-}
-.zoom-control input:focus-visible {
-  outline: none;
 }
 .zoom-control input::-moz-range-track {
   height: 2px;
@@ -109,8 +102,7 @@
   border-radius: 0;
   background: var(--muted);
 }
-.zoom-control input:hover::-moz-range-thumb,
-.zoom-control input:focus-visible::-moz-range-thumb {
+.zoom-control input:hover::-moz-range-thumb {
   border-color: var(--accent-hover);
   background: var(--accent);
 }

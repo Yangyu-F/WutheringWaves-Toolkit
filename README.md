@@ -10,7 +10,7 @@
 - [AGENTS.md](AGENTS.md)：未来实现需要遵守的工程约束。
 - [数据维护说明](docs/data-maintenance.md)：官方 WIKI 数据进入项目之前的许可、审阅与追踪要求。
 - [项目结构审计](docs/research/project-structure-audit.md)：当前目录边界、已清理的历史目录和后续拆分触发点。
-- [ADR 0001](docs/adr/0001-hash-routing.md)：GitHub Pages Hash 路由决策。
+- [ADR 0001](docs/adr/0001-history-routing.md)：GitHub Pages History 路由与回退决策。
 - [ADR 0002](docs/adr/0002-offline-source-pipeline.md)：离线静态数据流程决策。
 - [ADR 0003](docs/adr/0003-estimated-timeline-semantics.md)：估算时序、任意重叠、长度裁剪与同时间戳结算规则。
 - [ADR 0004](docs/adr/0004-timeline-editor-and-local-storage.md)：Pointer Events、多项目 IndexedDB 与导入导出决策。
@@ -29,7 +29,7 @@ npm run dev
 - 产品外壳：已改为类似代码编辑器的全屏深色工作区。顶栏只承载项目与编辑操作；左右固定宽度侧栏通过窄工具栏切换，左侧显示队伍配置或技能库，右侧显示技能状态或计算结果；中间为共享标尺的技能与效果时间轴。
 - Phase 1：已实现 3.5 单共鸣者纵向切片。秧秧固定 90 级与满技能，千古洑流固定 90 级并开放 1–5 阶谐振，五星声骸固定 +25/最高技能阶；玩家调整共鸣链、五个声骸位置的合法词条，以及敌人等级/抗性。伤害乘区、声明式动态效果、逐命中分解和外部锚定金标准已接入。
 - Phase 2：进行中。已接入首段即时命中、后续每 `50ms` 一段的估算动作区间、自由毫秒定位、播放头吸附、缩放、长度裁剪和撤销/重做。同一共鸣者最多显示 4 个并行动作，轨道按并发数扩展；效果区固定为三行共鸣者增益、一行全队增益和一行敌方减益。时间轴支持 30/60/120 秒，多项目通过 IndexedDB 保存并可用 JSON 导入导出。
-- 采用 Vue Router Hash 模式，构建产物可直接部署到 GitHub Pages 项目站点。
+- 采用 Vue Router History 模式；构建时同步生成 `404.html`，支持 GitHub Pages 项目站点直接访问与刷新子路由。
 - 库街区《鸣潮》WIKI 图鉴目录是主要资料源。首批清单覆盖共鸣者、武器、声骸、合鸣效果与敌人；材料、任务、探索和攻略仅列为后续候选。
 - Phase 0 数据管线 fixture 是合成样例；Phase 1 的 3.5 纵向数据与金标准 fixture 是人工交叉核对数据。生产应用不在运行时抓取 WIKI，候选数据必须经过实体级人工审阅。
 
@@ -37,7 +37,7 @@ npm run dev
 
 ```text
 src/
-├─ app/                         # 应用壳层与 Hash 路由
+├─ app/                         # 应用壳层与 History 路由
 ├─ data/                        # schema、来源清单和版本化游戏数据
 ├─ domain/                      # 与 UI 无关的领域类型
 ├─ features/calculator/

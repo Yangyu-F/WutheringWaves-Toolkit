@@ -31,6 +31,24 @@
   border: 1px solid var(--border);
   background: var(--control);
 }
+.resonator-label.slot-1 .track-avatar {
+  border-bottom: 2px solid var(--slot-one);
+}
+.resonator-label.slot-2 .track-avatar {
+  border-bottom: 2px solid var(--slot-two);
+}
+.resonator-label.slot-3 .track-avatar {
+  border-bottom: 2px solid var(--slot-three);
+}
+.resonator-label.slot-1.is-selected {
+  color: var(--slot-one);
+}
+.resonator-label.slot-2.is-selected {
+  color: var(--slot-two);
+}
+.resonator-label.slot-3.is-selected {
+  color: var(--slot-three);
+}
 .track-avatar img {
   width: 100%;
   height: 100%;

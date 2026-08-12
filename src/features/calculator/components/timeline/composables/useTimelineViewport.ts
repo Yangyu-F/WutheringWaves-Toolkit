@@ -17,6 +17,11 @@ export function useTimelineViewport(getWindows: () => ActionWindow[]) {
   function labelWidth() {
     return viewport.value?.querySelector<HTMLElement>('.ruler-spacer')?.offsetWidth ?? 0
   }
+  function minimumZoom() {
+    if (!viewport.value) return 1
+    const availableWidth = Math.max(1, viewport.value.clientWidth - labelWidth() - TIMELINE_INSET)
+    return availableWidth / (timeline.durationMs / 1_000)
+  }
   function updateViewportMetrics() {
     if (!viewport.value) return
     view.updateViewport(
@@ -26,23 +31,18 @@ export function useTimelineViewport(getWindows: () => ActionWindow[]) {
         1000,
     )
   }
-  async function setZoom(nextZoom: number, clientX?: number) {
+  async function setZoom(nextZoom: number, anchorTimeMs: number) {
     if (!viewport.value) return
     const oldZoom = view.zoomPxPerSecond
-    const rect = viewport.value.getBoundingClientRect()
-    const cursorOffset = Math.max(
-      0,
-      clientX === undefined
-        ? (viewport.value.clientWidth - labelWidth()) / 2
-        : clientX - rect.left - labelWidth(),
+    const visibleTrackWidth = Math.max(0, viewport.value.clientWidth - labelWidth())
+    const anchorOffset = Math.min(
+      visibleTrackWidth,
+      Math.max(0, TIMELINE_INSET + (anchorTimeMs / 1_000) * oldZoom - viewport.value.scrollLeft),
     )
-    const cursorTime = Math.max(
-      0,
-      (viewport.value.scrollLeft + cursorOffset - TIMELINE_INSET) / oldZoom,
-    )
-    view.zoomPxPerSecond = Math.min(800, Math.max(1, Math.round(nextZoom)))
+    view.zoomPxPerSecond = Math.min(800, Math.max(Math.ceil(minimumZoom()), Math.round(nextZoom)))
     await nextTick()
-    viewport.value.scrollLeft = cursorTime * view.zoomPxPerSecond + TIMELINE_INSET - cursorOffset
+    viewport.value.scrollLeft =
+      TIMELINE_INSET + (anchorTimeMs / 1_000) * view.zoomPxPerSecond - anchorOffset
     updateViewportMetrics()
   }
   async function fitTimeline() {
@@ -64,11 +64,11 @@ export function useTimelineViewport(getWindows: () => ActionWindow[]) {
     viewport.value.scrollLeft = 0
     updateViewportMetrics()
   }
-  function handleWheel(event: WheelEvent) {
+  function handleWheel(event: WheelEvent, anchorTimeMs: number) {
     if (event.ctrlKey || event.metaKey) {
       event.preventDefault()
       const step = view.zoomPxPerSecond < 20 ? 2 : 40
-      void setZoom(view.zoomPxPerSecond + (event.deltaY < 0 ? step : -step), event.clientX)
+      void setZoom(view.zoomPxPerSecond + (event.deltaY < 0 ? step : -step), anchorTimeMs)
     } else if (event.shiftKey && viewport.value) {
       event.preventDefault()
       viewport.value.scrollLeft += event.deltaY || event.deltaX
@@ -81,6 +81,9 @@ export function useTimelineViewport(getWindows: () => ActionWindow[]) {
     if (!viewport.value) return
     const updateHeight = () => {
       viewportHeight.value = viewport.value?.clientHeight ?? 0
+      if (view.zoomPxPerSecond < minimumZoom()) {
+        view.zoomPxPerSecond = Math.ceil(minimumZoom())
+      }
       updateViewportMetrics()
     }
     updateHeight()

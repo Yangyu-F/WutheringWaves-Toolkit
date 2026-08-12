@@ -127,7 +127,3 @@ output,
 .empty-state p {
   user-select: text;
 }
-:focus-visible {
-  outline: 1px solid var(--accent);
-  outline-offset: 1px;
-}

@@ -38,7 +38,23 @@
   font-weight: 400;
   white-space: nowrap;
 }
-.effect-track-pair:last-child .effect-row > span {
+.effect-row > span {
+  border-left-width: 2px;
+}
+.effect-row.group-slot-1 > span {
+  border-left-color: var(--slot-one);
+}
+.effect-row.group-slot-2 > span {
+  border-left-color: var(--slot-two);
+}
+.effect-row.group-slot-3 > span {
+  border-left-color: var(--slot-three);
+}
+.effect-row.group-team > span {
+  border-left-color: var(--accent);
+}
+.effect-row.group-enemy > span {
+  border-left-color: var(--danger);
   background: var(--debuff);
 }
 .effect-row p {

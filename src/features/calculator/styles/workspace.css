@@ -83,7 +83,21 @@
 }
 .workspace-rail button.is-active {
   color: var(--accent-hover);
-  background: var(--control-active);
+  background: var(--accent-soft);
+}
+.workspace-rail button.is-active::before {
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: var(--accent);
+  content: '';
+}
+.workspace-rail.is-left button.is-active::before {
+  right: -4px;
+}
+.workspace-rail.is-right button.is-active::before {
+  left: -4px;
 }
 .workspace-rail svg {
   width: 18px;

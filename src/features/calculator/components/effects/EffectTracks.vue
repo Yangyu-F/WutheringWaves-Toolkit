@@ -78,7 +78,7 @@ const rowHeights = computed(() =>
       </div>
       <div
         class="effect-row"
-        :class="`is-${group.tone}`"
+        :class="[`is-${group.tone}`, `group-${group.id}`]"
         :style="{ width: `${width}px`, height: `${rowHeights[group.id]}px` }"
       >
         <template v-if="groupBuffs(group.id).length">

@@ -55,6 +55,7 @@ const durationSeconds = computed({
   set: (value: number) => {
     timeline.durationMs = Math.min(120, Math.max(30, Math.round(value))) * 1000
     playheadMs.value = Math.min(playheadMs.value, timeline.durationMs)
+    void setZoom(view.zoomPxPerSecond, playheadMs.value)
   },
 })
 const actionNames = new Map(yangyangActions.map((action) => [action.id, action.name]))
@@ -97,7 +98,7 @@ const { handleTimelineKeydown } = useTimelineKeyboard(
   viewport,
   () => props.selectedActionId,
   selectAfterRemoval,
-  setZoom,
+  (zoom) => setZoom(zoom, playheadMs.value),
   updateViewportMetrics,
 )
 
@@ -130,8 +131,7 @@ onBeforeUnmount(() => {
       :zoom-px-per-second="view.zoomPxPerSecond"
       @update:zoom-px-per-second="
         (value) => {
-          view.zoomPxPerSecond = value
-          updateViewportMetrics()
+          void setZoom(value, playheadMs)
         }
       "
       @fit="fitTimeline"
@@ -145,7 +145,7 @@ onBeforeUnmount(() => {
         @ready="viewport = $event"
         @pointerdown.self="emit('select', undefined)"
         @scroll="updateViewportMetrics"
-        @wheel="handleWheel"
+        @wheel="handleWheel($event, playheadMs)"
         @keydown="handleTimelineKeydown"
       >
         <div

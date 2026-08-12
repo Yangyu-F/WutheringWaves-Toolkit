@@ -227,8 +227,7 @@
   content: attr(data-tooltip);
   pointer-events: none;
 }
-.project-switcher:not([open]) summary[data-tooltip]:hover::after,
-.project-switcher:not([open]) summary[data-tooltip]:focus-visible::after {
+.project-switcher:not([open]) summary[data-tooltip]:hover::after {
   display: block;
   animation: tooltip-reveal 120ms ease 400ms both;
 }

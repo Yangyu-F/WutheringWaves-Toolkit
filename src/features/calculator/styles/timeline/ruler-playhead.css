@@ -3,7 +3,7 @@
   z-index: var(--z-playhead);
   top: 0;
   bottom: 0;
-  left: calc(var(--label-width) + var(--timeline-inset) + var(--playhead-x) - 4px);
+  left: calc(var(--label-width) + var(--timeline-inset) + var(--playhead-x));
   width: 9px;
   padding: 0;
   cursor: ew-resize;
@@ -52,10 +52,17 @@
   border-left: 1px solid var(--tick-major);
   font-size: 10px;
 }
+.timeline-ruler span:not(.is-half-second) {
+  height: 8px;
+}
 .timeline-ruler span.is-half-second {
   height: 4px;
   color: var(--subtle);
   border-left-color: var(--tick-minor);
+}
+.timeline-ruler span.is-labeled {
+  color: var(--text);
+  border-left-color: var(--tick-text);
 }
 .ruler-spacer,
 .effects-heading {
