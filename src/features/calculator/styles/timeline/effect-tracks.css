@@ -6,9 +6,11 @@
   align-items: center;
   padding: 0 10px;
   color: var(--muted);
-  border-bottom: 1px solid var(--border);
-  font-size: 10px;
-  background: var(--panel);
+  border-right: 1px solid var(--boundary);
+  border-bottom: 1px solid var(--divider);
+  font-size: 11px;
+  font-weight: 500;
+  background: var(--panel-header);
 }
 .effect-tracks {
   display: contents;
@@ -19,7 +21,8 @@
 .effect-row {
   position: relative;
   overflow: hidden;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--divider);
+  background: var(--track-alt);
 }
 .effect-row > span {
   position: absolute;
@@ -29,14 +32,18 @@
   gap: 6px;
   overflow: hidden;
   padding: 0 5px;
-  border: 1px solid #555;
-  background: var(--control);
-  font-size: 9px;
+  border: 1px solid var(--divider);
+  background: var(--buff);
+  font-size: 10px;
+  font-weight: 400;
   white-space: nowrap;
+}
+.effect-track-pair:last-child .effect-row > span {
+  background: var(--debuff);
 }
 .effect-row p {
   margin: 0;
   padding: 7px 8px;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 11px;
 }

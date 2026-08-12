@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useProjectLibraryStore } from '../../stores/projectLibrary'
 import ToolbarIcon from './ToolbarIcon.vue'
@@ -7,21 +7,6 @@ import ToolbarIcon from './ToolbarIcon.vue'
 const library = useProjectLibraryStore()
 const { t } = useI18n()
 const root = ref<HTMLDetailsElement>()
-const searchInput = ref<HTMLInputElement>()
-const query = ref('')
-const projects = computed(() => {
-  const normalized = query.value.trim().toLocaleLowerCase()
-  return normalized
-    ? library.projects.filter((project) => project.name.toLocaleLowerCase().includes(normalized))
-    : library.projects
-})
-
-async function handleToggle() {
-  if (!root.value?.open) return
-  query.value = ''
-  await nextTick()
-  searchInput.value?.focus()
-}
 async function selectProject(id: string) {
   if (id !== library.activeProjectId) {
     await library.saveActive()
@@ -41,19 +26,16 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', closeFromOutsi
 </script>
 
 <template>
-  <details ref="root" class="project-switcher" @toggle="handleToggle" @keydown.esc="close">
-    <summary :title="t('workspace.switchProject')" :aria-label="t('workspace.switchProject')">
+  <details ref="root" class="project-switcher" @keydown.esc="close">
+    <summary
+      :data-tooltip="t('workspace.switchProject')"
+      :aria-label="t('workspace.switchProject')"
+    >
       <ToolbarIcon name="switch" />
     </summary>
     <div class="project-switcher-popover">
-      <input
-        ref="searchInput"
-        v-model="query"
-        type="search"
-        :placeholder="t('workspace.searchProjects')"
-      />
       <button
-        v-for="project in projects"
+        v-for="project in library.projects"
         :key="project.id"
         type="button"
         :class="{ 'is-active': project.id === library.activeProjectId }"
@@ -61,7 +43,7 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', closeFromOutsi
       >
         {{ project.name }}
       </button>
-      <p v-if="!projects.length">{{ t('workspace.noProjectsFound') }}</p>
+      <p v-if="!library.projects.length">{{ t('workspace.noProjectsFound') }}</p>
     </div>
   </details>
 </template>

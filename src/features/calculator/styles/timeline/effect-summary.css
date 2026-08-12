@@ -4,10 +4,11 @@
   padding: 0;
   color: var(--muted);
   border: 0;
-  border-top: 3px solid #666;
-  border-bottom: 1px solid var(--border);
-  background: var(--panel);
-  font-size: 9px;
+  border-top: 3px solid var(--accent-divider);
+  border-bottom: 1px solid var(--divider);
+  background: var(--panel-header);
+  font-size: 10px;
+  font-weight: 500;
 }
 .effects-summary-label {
   position: sticky;
@@ -17,6 +18,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 10px;
+  border-right: 1px solid var(--boundary);
   text-align: left;
 }
 .effects-summary-label svg {
@@ -32,7 +34,7 @@
 }
 .effects-summary-track {
   width: 100%;
-  background: var(--canvas);
+  background: var(--track-alt);
 }
 .effects-heading {
   height: 24px;

@@ -1,6 +1,6 @@
 .resonator-label {
   position: sticky;
-  z-index: 40;
+  z-index: var(--z-sticky-label);
   left: 0;
   display: flex;
   width: 100%;
@@ -9,22 +9,23 @@
   padding: 0 9px;
   color: var(--muted);
   border: 0;
-  border-bottom: 1px solid var(--border);
-  background: var(--panel);
+  border-right: 1px solid var(--boundary);
+  border-bottom: 1px solid var(--divider);
+  background: var(--panel-header);
   text-align: left;
 }
 .resonator-label.is-selected {
-  background: #303034;
-  color: var(--text);
+  background: var(--control-active);
+  color: var(--accent-hover);
 }
 .resonator-label > b {
   margin-left: auto;
 }
 .track-avatar {
   display: grid;
-  width: 42px;
-  height: 42px;
-  flex: 0 0 42px;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
   overflow: hidden;
   place-items: center;
   border: 1px solid var(--border);
@@ -47,7 +48,8 @@
 }
 .track-character strong {
   overflow: hidden;
-  font-size: 11px;
+  font-size: 12px;
+  font-weight: 500;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -60,8 +62,12 @@
   min-width: 100%;
   overflow: visible;
   isolation: isolate;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--divider);
+  background: var(--track);
+}
+.resonator-track:nth-child(4n + 2) {
+  background: var(--track-alt);
 }
 .resonator-track:has(.timeline-action:hover) {
-  z-index: 10;
+  z-index: var(--z-action);
 }

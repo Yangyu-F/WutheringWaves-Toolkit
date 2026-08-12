@@ -8,6 +8,7 @@ import { assignActionLanes } from '../../layout/assignActionLanes'
 import { useTimelineStore } from '../../stores/timeline'
 import { useTimelineViewportStore, type ResonatorSlotId } from '../../stores/timelineViewport'
 import EffectTracks from '../effects/EffectTracks.vue'
+import CustomScrollArea from '../ui/CustomScrollArea.vue'
 import EffectsSummary from './EffectsSummary.vue'
 import ResonatorLabel from './ResonatorLabel.vue'
 import ResonatorTrack from './ResonatorTrack.vue'
@@ -136,11 +137,12 @@ onBeforeUnmount(() => {
       @fit="fitTimeline"
     />
     <div class="timeline-body">
-      <div
-        ref="viewport"
-        class="timeline-viewport"
+      <CustomScrollArea
+        root-class="timeline-scroll-area"
+        viewport-class="timeline-viewport"
         tabindex="0"
         :style="{ '--second-width': `${view.zoomPxPerSecond}px` }"
+        @ready="viewport = $event"
         @pointerdown.self="emit('select', undefined)"
         @scroll="updateViewportMetrics"
         @wheel="handleWheel"
@@ -222,7 +224,7 @@ onBeforeUnmount(() => {
             <span>{{ (playheadMs / 1000).toFixed(3) }}s</span>
           </button>
         </div>
-      </div>
+      </CustomScrollArea>
       <p v-if="timeline.operationMessage" class="timeline-message" role="status">
         {{ t(`workspace.operationMessages.${timeline.operationMessage}`) }}
       </p>

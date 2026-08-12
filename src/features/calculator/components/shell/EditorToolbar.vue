@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { downloadProject, importProject } from '../../persistence/projectTransfer'
 import { useProjectLibraryStore } from '../../stores/projectLibrary'
 import { useTimelineStore } from '../../stores/timeline'
@@ -7,6 +7,7 @@ import { useI18n } from 'vue-i18n'
 import ProjectSwitcher from './ProjectSwitcher.vue'
 import ToolbarIcon from './ToolbarIcon.vue'
 import IconButton from '../ui/IconButton.vue'
+import ModalDialog from '../ui/ModalDialog.vue'
 
 const library = useProjectLibraryStore()
 const timeline = useTimelineStore()
@@ -17,7 +18,13 @@ const editingName = ref(false)
 const renameCancelled = ref(false)
 const draftName = ref('')
 const transferMessage = ref('')
+const deleteDialogOpen = ref(false)
 const { t } = useI18n()
+let transferTimer: ReturnType<typeof setTimeout> | undefined
+watch(transferMessage, (message) => {
+  clearTimeout(transferTimer)
+  if (message) transferTimer = setTimeout(() => (transferMessage.value = ''), 3200)
+})
 
 function closeProjectMenu() {
   if (projectMenu.value) projectMenu.value.open = false
@@ -26,7 +33,10 @@ function closeProjectMenuFromOutside(event: PointerEvent) {
   if (!projectMenu.value?.contains(event.target as Node)) closeProjectMenu()
 }
 onMounted(() => document.addEventListener('pointerdown', closeProjectMenuFromOutside))
-onBeforeUnmount(() => document.removeEventListener('pointerdown', closeProjectMenuFromOutside))
+onBeforeUnmount(() => {
+  document.removeEventListener('pointerdown', closeProjectMenuFromOutside)
+  clearTimeout(transferTimer)
+})
 
 function beginRename() {
   renameCancelled.value = false
@@ -46,7 +56,9 @@ function cancelRename() {
   editingName.value = false
 }
 async function handleProjectMenuToggle() {
-  if (!projectMenu.value?.open) return
+  if (!projectMenu.value?.open) {
+    return
+  }
   await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()))
   firstMenuAction.value?.focus()
 }
@@ -79,33 +91,45 @@ function exportActiveProject() {
   if (project) downloadProject(project)
   closeProjectMenu()
 }
+async function deleteActiveProject() {
+  if (!library.activeProjectId) return
+  await library.removeProject(library.activeProjectId)
+  deleteDialogOpen.value = false
+}
+function requestProjectDelete() {
+  closeProjectMenu()
+  deleteDialogOpen.value = true
+}
 </script>
 
 <template>
   <header class="editor-toolbar">
     <div class="project-title">
       <ProjectSwitcher />
-      <input
-        v-if="editingName"
-        v-model="draftName"
-        maxlength="80"
-        autofocus
-        @blur="finishRename"
-        @keydown.enter="finishRename"
-        @keydown.esc.prevent="cancelRename"
-      />
-      <template v-else>
-        <span class="project-name">{{ library.activeProject?.name ?? '未打开项目' }}</span>
-        <button
-          class="project-edit"
-          type="button"
-          :title="t('workspace.renameProject')"
-          :aria-label="t('workspace.renameProject')"
-          @click="beginRename"
-        >
-          <ToolbarIcon name="edit" />
-        </button>
-      </template>
+      <span class="project-name-control">
+        <span class="project-name-bracket">
+          <input
+            v-if="editingName"
+            v-model="draftName"
+            maxlength="80"
+            autofocus
+            @blur="finishRename"
+            @keydown.enter="finishRename"
+            @keydown.esc.prevent="cancelRename"
+          />
+          <span v-else class="project-name">{{ library.activeProject?.name ?? '未打开项目' }}</span>
+        </span>
+      </span>
+      <button
+        class="project-edit"
+        type="button"
+        :title="t('workspace.renameProject')"
+        :aria-label="t('workspace.renameProject')"
+        @mousedown.prevent
+        @click="editingName ? finishRename() : beginRename()"
+      >
+        <ToolbarIcon name="edit" />
+      </button>
       <button
         class="save-status"
         :class="`is-${library.saveStatus}`"
@@ -163,6 +187,14 @@ function exportActiveProject() {
           <button type="button" :disabled="!library.activeProject" @click="exportActiveProject">
             {{ t('workspace.export') }}
           </button>
+          <button
+            class="project-delete"
+            type="button"
+            :disabled="!library.activeProject"
+            @click="requestProjectDelete"
+          >
+            {{ t('workspace.deleteProject') }}
+          </button>
         </div>
       </details>
       <span v-if="transferMessage" class="toolbar-message">{{ transferMessage }}</span>
@@ -174,5 +206,24 @@ function exportActiveProject() {
       accept="application/json,.json"
       @change="handleImport"
     />
+    <ModalDialog
+      v-if="deleteDialogOpen"
+      :title="t('workspace.deleteProjectTitle')"
+      :close-label="t('workspace.close')"
+      size="small"
+      @close="deleteDialogOpen = false"
+    >
+      <p class="delete-project-message">
+        {{ t('workspace.deleteProjectMessage', { name: library.activeProject?.name ?? '' }) }}
+      </p>
+      <template #footer>
+        <button type="button" data-autofocus @click="deleteDialogOpen = false">
+          {{ t('workspace.cancel') }}
+        </button>
+        <button class="is-danger" type="button" @click="deleteActiveProject">
+          {{ t('workspace.confirmDelete') }}
+        </button>
+      </template>
+    </ModalDialog>
   </header>
 </template>

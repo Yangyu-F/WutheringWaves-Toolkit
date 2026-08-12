@@ -9,7 +9,7 @@ import {
 } from '../persistence/projectDatabase'
 import { createProjectId } from '../persistence/projectSchema'
 import type { CalculatorProject, ProjectSettings } from '../persistence/projectSchema'
-import { useCalculatorProjectStore } from './project'
+import { createDefaultProjectSettings, useCalculatorProjectStore } from './project'
 import { DEFAULT_TIMELINE_DURATION_MS, useTimelineStore } from './timeline'
 
 const ACTIVE_PROJECT_KEY = 'wuwa-calculator:active-project'
@@ -45,8 +45,6 @@ export const useProjectLibraryStore = defineStore('project-library', {
       }
     },
     createBlankProject(name = '未命名项目'): CalculatorProject {
-      const projectStore = useCalculatorProjectStore()
-      const timelineStore = useTimelineStore()
       const now = new Date().toISOString()
       return {
         schemaVersion: 1,
@@ -65,11 +63,13 @@ export const useProjectLibraryStore = defineStore('project-library', {
           { id: 'slot-2' },
           { id: 'slot-3' },
         ],
-        settings: structuredClone(toRaw(projectStore.settings)) as ProjectSettings,
+        settings: createDefaultProjectSettings() as ProjectSettings,
         loadout: structuredClone(defaultPhaseOneLoadout),
         timeline: {
-          ...timelineStore.document(),
+          schemaVersion: 2,
           durationMs: DEFAULT_TIMELINE_DURATION_MS,
+          snapMs: 1,
+          actions: [],
         },
       }
     },

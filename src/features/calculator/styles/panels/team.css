@@ -6,7 +6,11 @@
   background: var(--control);
 }
 .team-slot.is-selected {
-  outline: 1px solid #888;
+  outline: 1px solid var(--accent);
+  background: var(--control-active);
+}
+.team-slot:hover {
+  background: var(--control-hover);
 }
 .team-slot.is-active {
   display: grid;
@@ -23,6 +27,12 @@
 .team-slot strong,
 .team-slot small {
   display: block;
+}
+.team-slot strong {
+  font-weight: 500;
+}
+.team-slot small {
+  font-weight: 400;
 }
 .team-slot figure {
   grid-column: 1 / 3;

@@ -9,8 +9,8 @@
   align-items: center;
   gap: 16px;
   padding: 0 11px;
-  border-bottom: 1px solid var(--border);
-  background: var(--panel);
+  border-bottom: 1px solid var(--boundary);
+  background: var(--panel-header);
 }
 .timeline-tools > div {
   display: flex;
@@ -19,12 +19,13 @@
   margin-right: auto;
 }
 .timeline-tools strong {
-  font-size: 12px;
+  font-size: 13px;
 }
 .timeline-tools span,
 .timeline-tools label {
   color: var(--muted);
-  font-size: 10px;
+  font-size: 11px;
+  font-weight: 400;
 }
 .toolbar-field {
   display: flex;
@@ -38,40 +39,133 @@
   gap: 5px;
   white-space: nowrap;
 }
-.timeline-tools select {
-  height: 24px;
-  border: 1px solid var(--border);
-  border-radius: 0;
-  background: var(--canvas);
+.zoom-control {
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
-.timeline-tools input {
-  width: 90px;
-  vertical-align: middle;
+.zoom-control svg,
+.fit-timeline svg {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+}
+.zoom-control input {
+  width: 96px;
+  height: 16px;
+  margin: 0;
+  appearance: none;
+  background: linear-gradient(
+    to right,
+    var(--accent-divider) 0 var(--zoom-progress),
+    var(--border) var(--zoom-progress) 100%
+  );
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 2px;
+  cursor: grab;
+}
+.zoom-control input:active {
+  cursor: grabbing;
+}
+.zoom-control input::-webkit-slider-runnable-track {
+  height: 2px;
+  background: transparent;
+}
+.zoom-control input::-webkit-slider-thumb {
+  width: 10px;
+  height: 14px;
+  margin-top: -6px;
+  appearance: none;
+  border: 1px solid var(--boundary);
+  border-radius: 0;
+  background: var(--muted);
+}
+.zoom-control input:hover::-webkit-slider-thumb,
+.zoom-control input:focus-visible::-webkit-slider-thumb {
+  border-color: var(--accent-hover);
+  background: var(--accent);
+}
+.zoom-control input:focus-visible {
+  outline: none;
+}
+.zoom-control input::-moz-range-track {
+  height: 2px;
+  background: var(--border);
+}
+.zoom-control input::-moz-range-progress {
+  height: 2px;
+  background: var(--accent-divider);
+}
+.zoom-control input::-moz-range-thumb {
+  width: 10px;
+  height: 14px;
+  border: 1px solid var(--boundary);
+  border-radius: 0;
+  background: var(--muted);
+}
+.zoom-control input:hover::-moz-range-thumb,
+.zoom-control input:focus-visible::-moz-range-thumb {
+  border-color: var(--accent-hover);
+  background: var(--accent);
 }
 .timeline-tools output {
   display: inline-block;
   min-width: 46px;
   margin-left: 5px;
   color: var(--text);
-  font-size: 9px;
+  font-size: 10px;
+  font-weight: 500;
   text-align: right;
 }
 .fit-timeline {
+  display: flex;
   height: 24px;
+  align-items: center;
+  gap: 5px;
   padding: 0 7px;
   color: var(--muted);
-  border: 1px solid var(--border);
-  background: var(--canvas);
-  font-size: 10px;
+  border: 1px solid transparent;
+  background: var(--button);
+  font-size: 11px;
+  transition:
+    color 120ms ease,
+    background-color 120ms ease,
+    transform 80ms ease;
 }
 .fit-timeline:hover {
   color: var(--text);
-  border-color: #666;
+  background: var(--button-hover);
+}
+.fit-timeline:active {
+  transform: translateY(1px);
 }
 .timeline-tools .timeline-duration {
   width: 54px;
+}
+.timeline-tools .timeline-duration summary {
   height: 24px;
-  border: 1px solid var(--border);
-  border-radius: 0;
-  background: var(--canvas);
+}
+@media (max-width: 1180px) {
+  .timeline-tools {
+    gap: 9px;
+  }
+  .timeline-tools > .toolbar-field > span:first-child,
+  .fit-timeline > span,
+  .timeline-tools output {
+    display: none;
+  }
+  .zoom-control input {
+    width: 72px;
+  }
+  .fit-timeline {
+    width: 24px;
+    padding: 0;
+    justify-content: center;
+  }
 }

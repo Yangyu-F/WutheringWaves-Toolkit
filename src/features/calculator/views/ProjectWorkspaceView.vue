@@ -47,10 +47,7 @@ function removeSelectedAction(id: string) {
   selectedActionId.value = next?.id
 }
 watchEffect(() => {
-  const productName = t('workspace.productName')
-  document.title = library.activeProject
-    ? `${library.activeProject.name} · ${productName}`
-    : productName
+  document.title = t('workspace.productName')
 })
 
 onMounted(() => {
@@ -93,7 +90,9 @@ watch(
         <ScrollRegion v-if="leftPanel === 'team'" class="sidebar-mode-content">
           <TeamPanel /><EchoLoadoutPanel />
         </ScrollRegion>
-        <ScrollRegion v-else class="sidebar-mode-content"><SkillLibrary /></ScrollRegion>
+        <ScrollRegion v-else class="sidebar-mode-content"
+          ><SkillLibrary @request-team="leftPanel = 'team'"
+        /></ScrollRegion>
       </PanelShell>
     </aside>
     <main class="workspace-canvas">

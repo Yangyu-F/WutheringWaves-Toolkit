@@ -1,8 +1,6 @@
 .results-content {
   height: 100%;
   min-height: 0;
-  overflow-y: scroll;
-  scrollbar-gutter: stable;
 }
 .result-metric,
 .result-status {
@@ -16,7 +14,8 @@
 .result-metric small,
 .result-status {
   color: var(--muted);
-  font-size: 10px;
+  font-size: 11px;
+  font-weight: 400;
 }
 .result-metric {
   display: grid;
@@ -24,7 +23,10 @@
 }
 .result-metric output {
   margin-top: 4px;
-  font-size: 18px;
+  color: var(--accent-hover);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
 }
 .result-status {
   border-bottom: 0;
@@ -32,6 +34,10 @@
 .result-status ul {
   margin: 0;
   padding-left: 16px;
+}
+.result-status:has(li) {
+  color: var(--danger);
+  background: var(--danger-soft);
 }
 .result-status li + li {
   margin-top: 6px;

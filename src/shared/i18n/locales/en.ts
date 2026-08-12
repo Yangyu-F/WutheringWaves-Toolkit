@@ -10,6 +10,11 @@ export default {
     duplicate: 'Duplicate',
     import: 'Import',
     export: 'Export',
+    deleteProject: 'Delete project',
+    deleteProjectTitle: 'Delete project?',
+    deleteProjectMessage: 'Delete “{name}”? This action cannot be undone.',
+    cancel: 'Cancel',
+    confirmDelete: 'Delete',
     save: 'Save',
     switchProject: 'Switch project',
     saveStatus: {

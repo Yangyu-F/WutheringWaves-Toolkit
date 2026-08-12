@@ -1,3 +1,9 @@
+<script setup lang="ts">
+import CustomScrollArea from './CustomScrollArea.vue'
+</script>
+
 <template>
-  <div class="scroll-region"><slot /></div>
+  <CustomScrollArea root-class="scroll-region" :show-vertical="false" :show-horizontal="false">
+    <slot />
+  </CustomScrollArea>
 </template>

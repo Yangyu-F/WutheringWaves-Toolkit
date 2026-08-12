@@ -1,23 +1,73 @@
 :root {
-  color: #ededed;
-  background: #18181c;
-  font-family: Arial, 'Microsoft YaHei', sans-serif;
+  color: #e9e7e1;
+  background: #18181a;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    'PingFang SC',
+    'Microsoft YaHei UI',
+    'Microsoft YaHei',
+    'Noto Sans CJK SC',
+    'Noto Sans SC',
+    sans-serif;
   font-size: 13px;
-  line-height: 1.4;
-  --page: #18181c;
-  --header: #202024;
-  --panel: #202024;
-  --canvas: #111113;
-  --control: #29292d;
-  --border: #3a3a3f;
-  --text: #ededed;
-  --muted: #a5a5aa;
+  line-height: 1.45;
+  --page: #18181a;
+  --header: #202023;
+  --rail: #1c1c1f;
+  --panel: #232326;
+  --panel-header: #29292d;
+  --canvas: #141416;
+  --track: #19191c;
+  --track-alt: #1c1c1f;
+  --input: #1d1d20;
+  --control: #2c2c30;
+  --control-hover: #343439;
+  --control-active: #3c3a34;
+  --control-disabled: #262629;
+  --button: #35353a;
+  --button-hover: #414147;
+  --border: #38383d;
+  --divider: #2b2b2f;
+  --boundary: #505056;
+  --tick-major: #77736a;
+  --tick-minor: #514f4a;
+  --tick-text: #c8c5bd;
+  --text: #e9e7e1;
+  --muted: #b2b0aa;
+  --subtle: #85847f;
+  --accent: #c6a752;
+  --accent-hover: #d2b866;
+  --accent-soft: rgb(198 167 82 / 10%);
+  --accent-divider: #4a4538;
+  --skill: #3a3938;
+  --skill-hover: #45433f;
+  --slot-one: #b98262;
+  --slot-two: #8e83ad;
+  --slot-three: #6f9c91;
   --danger: #d97976;
+  --danger-soft: rgb(217 121 118 / 9%);
+  --success: #7fa88a;
+  --buff: #383731;
+  --debuff: #3a3031;
+  --scrollbar-size: 8px;
+  --scrollbar-thumb: rgb(233 231 225 / 28%);
+  --scrollbar-thumb-hover: rgb(233 231 225 / 36%);
+  --scrollbar-thumb-active: rgb(233 231 225 / 50%);
+  --z-action: 10;
+  --z-ruler: 20;
+  --z-playhead: 30;
+  --z-sticky-label: 40;
+  --z-scrollbar: 70;
+  --z-toolbar: 100;
+  --z-popover: 120;
+  --z-dialog: 200;
 }
 
 * {
   box-sizing: border-box;
-  user-select: none;
 }
 html,
 body,
@@ -35,6 +85,25 @@ select {
 }
 button {
   cursor: pointer;
+  font-weight: 500;
+  user-select: none;
+}
+input,
+select {
+  font-weight: 400;
+}
+strong,
+b,
+h1,
+h2 {
+  font-weight: 600;
+}
+input,
+output,
+.timeline-ruler,
+.timeline-playhead,
+.result-metric {
+  font-variant-numeric: tabular-nums;
 }
 .visually-hidden {
   position: fixed;
@@ -43,7 +112,22 @@ button {
   opacity: 0;
   pointer-events: none;
 }
+.timeline-editor,
+.workspace-rail,
+.editor-toolbar,
+.panel-shell-title,
+.skill-library nav {
+  user-select: none;
+}
+.project-name,
+.toolbar-message,
+.timeline-message,
+.result-status,
+.inspector-content small,
+.empty-state p {
+  user-select: text;
+}
 :focus-visible {
-  outline: 1px solid #aaa;
+  outline: 1px solid var(--accent);
   outline-offset: 1px;
 }

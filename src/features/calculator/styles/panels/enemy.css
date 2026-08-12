@@ -16,7 +16,7 @@
   height: 27px;
   border: 1px solid var(--border);
   border-radius: 0;
-  background: var(--canvas);
+  background: var(--input);
 }
 .enemy-panel input,
 .enemy-panel select {

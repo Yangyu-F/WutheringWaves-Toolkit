@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import InspectorPanel from '../inspector/InspectorPanel.vue'
 import ResultsDock from '../results/ResultsDock.vue'
 import PanelShell from '../ui/PanelShell.vue'
+import ScrollRegion from '../ui/ScrollRegion.vue'
 
 defineProps<{
   active: 'inspector' | 'results'
@@ -18,13 +19,15 @@ const { t } = useI18n()
 <template>
   <aside class="utility-panel">
     <PanelShell :title="t(active === 'inspector' ? 'workspace.inspector' : 'workspace.results')">
-      <InspectorPanel
-        v-if="active === 'inspector'"
-        :selected-action-id="selectedActionId"
-        :natural-end-time-ms="naturalEndTimeMs"
-        @delete="emit('delete', $event)"
-      />
-      <ResultsDock v-else :result="result" />
+      <ScrollRegion>
+        <InspectorPanel
+          v-if="active === 'inspector'"
+          :selected-action-id="selectedActionId"
+          :natural-end-time-ms="naturalEndTimeMs"
+          @delete="emit('delete', $event)"
+        />
+        <ResultsDock v-else :result="result" />
+      </ScrollRegion>
     </PanelShell>
   </aside>
 </template>

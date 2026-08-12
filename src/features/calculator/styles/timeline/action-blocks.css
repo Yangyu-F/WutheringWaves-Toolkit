@@ -23,12 +23,16 @@
   display: block;
   height: var(--action-height);
   padding: 0;
-  border: 1px solid #555;
-  background: var(--control);
+  border: 1px solid var(--divider);
+  border-left: 2px solid var(--accent-divider);
+  background: var(--skill);
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease;
 }
 .action-tooltip {
   position: absolute;
-  z-index: 6;
+  z-index: var(--z-action);
   top: calc(var(--action-height) + 4px);
   left: 0;
   display: none;
@@ -48,29 +52,56 @@
   text-overflow: ellipsis;
 }
 .action-tooltip b {
-  font-size: 11px;
+  font-size: 12px;
+  font-weight: 500;
 }
 .action-tooltip small {
   margin-top: 2px;
   color: var(--muted);
-  font-size: 9px;
+  font-size: 10px;
+  font-weight: 400;
 }
 .timeline-action:hover,
 .timeline-action.is-selected {
-  z-index: 10;
+  z-index: var(--z-action);
 }
 .timeline-action:hover .action-tooltip {
   display: block;
 }
+.timeline-action:hover .action-kept {
+  background: var(--skill-hover);
+}
 .timeline-action.is-selected .action-kept {
-  outline: 1px solid #aaa;
+  border-color: var(--accent);
+  outline: 1px solid var(--accent);
+}
+.resonator-track.slot-1 .action-kept {
+  border-left-color: var(--slot-one);
+}
+.resonator-track.slot-2 .action-kept {
+  border-left-color: var(--slot-two);
+}
+.resonator-track.slot-3 .action-kept {
+  border-left-color: var(--slot-three);
+}
+.resonator-track.slot-1 .timeline-action:hover .action-kept {
+  border-color: var(--slot-one);
+}
+.resonator-track.slot-2 .timeline-action:hover .action-kept {
+  border-color: var(--slot-two);
+}
+.resonator-track.slot-3 .timeline-action:hover .action-kept {
+  border-color: var(--slot-three);
+}
+.resonator-track .timeline-action.is-selected .action-kept {
+  border-color: var(--accent);
 }
 .timeline-action.is-new .action-kept {
   animation: action-added 700ms ease-out;
 }
 @keyframes action-added {
   0% {
-    outline: 2px solid #ddd;
+    outline: 2px solid var(--accent-hover);
     filter: brightness(1.7);
   }
   100% {
@@ -96,8 +127,8 @@
   top: 50%;
   width: 7px;
   height: 7px;
-  border: 1px solid #171719;
-  background: #f0f0f0;
+  border: 1px solid var(--canvas);
+  background: var(--text);
   transform: translate(-50%, -50%) rotate(45deg);
   pointer-events: none;
 }

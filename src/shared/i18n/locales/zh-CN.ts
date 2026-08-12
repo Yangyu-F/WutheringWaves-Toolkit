@@ -10,6 +10,11 @@ export default {
     duplicate: '复制',
     import: '导入',
     export: '导出',
+    deleteProject: '删除项目',
+    deleteProjectTitle: '确认删除项目',
+    deleteProjectMessage: '确定要删除“{name}”吗？此操作无法撤销。',
+    cancel: '取消',
+    confirmDelete: '删除',
     save: '保存',
     switchProject: '切换项目',
     saveStatus: {

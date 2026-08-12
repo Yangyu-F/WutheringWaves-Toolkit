@@ -1,6 +1,6 @@
 .timeline-playhead {
   position: absolute;
-  z-index: 30;
+  z-index: var(--z-playhead);
   top: 0;
   bottom: 0;
   left: calc(var(--label-width) + var(--timeline-inset) + var(--playhead-x) - 4px);
@@ -8,7 +8,7 @@
   padding: 0;
   cursor: ew-resize;
   border: 0;
-  border-left: 1px solid #aaa;
+  border-left: 1px solid var(--accent);
   background: transparent;
 }
 .timeline-playhead::before {
@@ -17,7 +17,7 @@
   left: -4px;
   width: 7px;
   height: 7px;
-  background: #aaa;
+  background: var(--accent);
   content: '';
 }
 .timeline-playhead > span {
@@ -29,8 +29,8 @@
   padding: 2px 5px;
   color: var(--text);
   border: 1px solid var(--border);
-  background: var(--panel);
-  font-size: 10px;
+  background: var(--panel-header);
+  font-size: 11px;
   line-height: 1.4;
 }
 .timeline-playhead.is-dragging > span {
@@ -38,22 +38,24 @@
 }
 .timeline-ruler {
   position: sticky;
-  z-index: 20;
+  z-index: var(--z-ruler);
   top: 0;
   height: 27px;
-  border-bottom: 1px solid var(--border);
-  background: var(--panel);
+  border-bottom: 2px solid var(--boundary);
+  background: var(--panel-header);
 }
 .timeline-ruler span {
   position: absolute;
   bottom: 5px;
   padding-left: 5px;
-  color: var(--muted);
-  border-left: 1px solid var(--border);
-  font-size: 9px;
+  color: var(--tick-text);
+  border-left: 1px solid var(--tick-major);
+  font-size: 10px;
 }
 .timeline-ruler span.is-half-second {
   height: 4px;
+  color: var(--subtle);
+  border-left-color: var(--tick-minor);
 }
 .ruler-spacer,
 .effects-heading {
@@ -61,14 +63,16 @@
   align-items: center;
   padding: 0 10px;
   color: var(--muted);
-  border-bottom: 1px solid var(--border);
-  font-size: 9px;
+  border-right: 1px solid var(--boundary);
+  border-bottom: 1px solid var(--divider);
+  font-size: 10px;
 }
 .ruler-spacer {
   position: sticky;
-  z-index: 41;
+  z-index: var(--z-sticky-label);
   top: 0;
   left: 0;
   height: 27px;
-  background: var(--panel);
+  border-bottom: 2px solid var(--boundary);
+  background: var(--panel-header);
 }
