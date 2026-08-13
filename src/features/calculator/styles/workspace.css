@@ -21,7 +21,7 @@
   min-height: 0;
   overflow: hidden;
   background: var(--panel);
-  border-right: 2px solid var(--boundary);
+  border-right: 1px solid var(--boundary);
 }
 .utility-panel {
   grid-row: 2;
@@ -29,7 +29,7 @@
   min-height: 0;
   overflow: hidden;
   background: var(--panel);
-  border-left: 2px solid var(--boundary);
+  border-left: 1px solid var(--boundary);
 }
 .sidebar-mode-content {
   min-height: 0;
@@ -40,6 +40,9 @@
   min-width: 0;
   min-height: 0;
   background: var(--canvas);
+  box-shadow:
+    inset 1px 0 rgb(255 255 255 / 2%),
+    inset -1px 0 rgb(255 255 255 / 2%);
 }
 .workspace-rail {
   grid-row: 2;
@@ -77,13 +80,13 @@
 .workspace-rail.is-right .icon-button::after {
   right: calc(100% + 8px);
 }
-.workspace-rail button:hover {
+.workspace-rail button:not(.is-active):hover {
   color: var(--text);
   background: var(--control-hover);
 }
 .workspace-rail button.is-active {
-  color: var(--accent-hover);
-  background: var(--accent-soft);
+  color: var(--text);
+  background: var(--control-active);
 }
 .workspace-rail button.is-active::before {
   position: absolute;
@@ -104,7 +107,7 @@
   height: 18px;
   fill: none;
   stroke: currentColor;
-  stroke-width: 1.7;
+  stroke-width: var(--icon-stroke);
   stroke-linecap: round;
   stroke-linejoin: round;
 }

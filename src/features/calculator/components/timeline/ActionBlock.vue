@@ -42,7 +42,7 @@ defineEmits<{
     <span class="action-tooltip">
       <b>{{ name }}</b>
       <small>
-        {{ (action.startTimeMs / 1000).toFixed(3) }}s–{{ (endTimeMs / 1000).toFixed(3) }}s ·
+        {{ (action.startTimeMs / 1000).toFixed(3) }}s-{{ (endTimeMs / 1000).toFixed(3) }}s ·
         {{ hitOffsets.length }} Hits
       </small>
     </span>

@@ -5,7 +5,7 @@
 .result-metric,
 .result-status {
   padding: 14px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--divider);
 }
 .result-metric small,
 .result-metric output {

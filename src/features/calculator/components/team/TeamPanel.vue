@@ -14,7 +14,7 @@ const { t } = useI18n()
 </script>
 
 <template>
-  <section class="side-section team-panel">
+  <section class="side-section">
     <header>
       <h2>{{ t('workspace.team') }}</h2>
     </header>

@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia'
 
 export type ResonatorSlotId = 'slot-1' | 'slot-2' | 'slot-3'
+export const MIN_TIMELINE_ZOOM = 10
+export const MAX_TIMELINE_ZOOM = 800
 
 export const useTimelineViewportStore = defineStore('calculator-timeline-viewport', {
   state: () => ({

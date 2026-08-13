@@ -11,6 +11,7 @@
   padding: 0 11px;
   border-bottom: 1px solid var(--boundary);
   background: var(--panel-header);
+  box-shadow: 0 1px rgb(0 0 0 / 22%);
 }
 .timeline-tools > div {
   display: flex;
@@ -51,7 +52,7 @@
   flex: 0 0 14px;
   fill: none;
   stroke: currentColor;
-  stroke-width: 1.4;
+  stroke-width: var(--icon-stroke);
   stroke-linecap: square;
   stroke-linejoin: miter;
 }
@@ -80,7 +81,7 @@
   margin-top: -6px;
   appearance: none;
   border: 1px solid var(--boundary);
-  border-radius: 0;
+  border-radius: var(--radius-control);
   background: var(--muted);
 }
 .zoom-control input:hover::-webkit-slider-thumb {
@@ -99,7 +100,7 @@
   width: 10px;
   height: 14px;
   border: 1px solid var(--boundary);
-  border-radius: 0;
+  border-radius: var(--radius-control);
   background: var(--muted);
 }
 .zoom-control input:hover::-moz-range-thumb {
@@ -117,12 +118,13 @@
 }
 .fit-timeline {
   display: flex;
-  height: 24px;
+  height: var(--compact-control-height);
   align-items: center;
   gap: 5px;
   padding: 0 7px;
   color: var(--muted);
   border: 1px solid transparent;
+  border-radius: var(--radius-control);
   background: var(--button);
   font-size: 11px;
   transition:
@@ -141,7 +143,7 @@
   width: 54px;
 }
 .timeline-tools .timeline-duration summary {
-  height: 24px;
+  height: var(--compact-control-height);
 }
 @media (max-width: 1180px) {
   .timeline-tools {

@@ -33,6 +33,7 @@
   overflow: hidden;
   padding: 0 5px;
   border: 1px solid var(--divider);
+  border-radius: var(--radius-content);
   background: var(--buff);
   font-size: 10px;
   font-weight: 400;

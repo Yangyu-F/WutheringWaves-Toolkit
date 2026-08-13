@@ -3,7 +3,7 @@
   overflow: hidden;
 }
 .timeline-scroll-area {
-  --timeline-label-width: 136px;
+  --timeline-label-width: 152px;
   --timeline-ruler-height: 27px;
   width: 100%;
   height: 100%;

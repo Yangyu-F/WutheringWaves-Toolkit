@@ -71,15 +71,23 @@ describe('timeline editor store', () => {
   it('round-trips a versioned document and rejects invalid input', () => {
     const store = useTimelineStore()
     store.actions[0]!.resonatorSlotId = 'slot-2'
-    store.trimAction('action-1', 300)
+    store.trimAction('action-1', 25)
     const exported = JSON.stringify(store.document())
 
     const restored = useTimelineStore(createPinia())
     const parsed = parseTimelineDocument(JSON.parse(exported))
     expect(parsed).toBeDefined()
     restored.replaceDocument(parsed!)
-    expect(restored.actions[0]?.trimmedEndTimeMs).toBe(300)
+    expect(restored.actions[0]?.trimmedEndTimeMs).toBe(25)
     expect(restored.actions[0]?.resonatorSlotId).toBe('slot-2')
     expect(parseTimelineDocument({ schemaVersion: 2 })).toBeUndefined()
+  })
+
+  it('does not trim an action beyond its natural duration', () => {
+    const store = useTimelineStore()
+
+    store.trimAction('action-1', 10_000)
+
+    expect(store.actions[0]?.trimmedEndTimeMs).toBeUndefined()
   })
 })

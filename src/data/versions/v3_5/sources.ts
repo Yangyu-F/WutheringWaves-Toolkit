@@ -13,7 +13,4 @@ export const phaseOneSources = {
   biliEcho: 'https://wiki.biligame.com/wutheringwaves/声骸/飞廉之猩',
   biliSonata: 'https://wiki.biligame.com/wutheringwaves/声骸合鸣/啸谷长风',
   wikiwikiYangyang: 'https://wikiwiki.jp/w-w/秧秧',
-  wikiwikiWeapon: 'https://wikiwiki.jp/w-w/千古の湖水',
-  wikiwikiEcho: 'https://wikiwiki.jp/w-w/飛廉の大猿',
-  wikiwikiSonata: 'https://wikiwiki.jp/w-w/谷を突き抜ける長風',
 } as const

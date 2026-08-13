@@ -4,7 +4,7 @@
 
 项目已建立 `data-sources/kuro-wiki/` 来源清单与映射、Zod schema、合成 fixture、候选规范化示例及 `npm run data:validate` 校验命令。`npm run wiki:snapshot` 可从官方 Wiki 页面使用的公开只读接口获取计算器相关五类目录元数据和词条正文；正式版本数据仍需人工审核，不能由快照直接覆盖。
 
-- 库街区《鸣潮》WIKI 是主要资料来源；鸣潮 BWiki 与 `https://wikiwiki.jp/w-w/` 是固定社区交叉验证来源。其他社区资料只用于补足三者均缺失的机制数据。
+- 所有实体数据都以库街区《鸣潮》WIKI 为主要依据。共鸣者固定与鸣潮 BWiki、`https://wikiwiki.jp/w-w/` 交叉验证；武器、声骸和合鸣只与鸣潮 BWiki 交叉验证。其他社区资料仅补充指定来源均未提供的机制数据。
 - 当前仓库没有 CI 在线同步任务，也不把站点前端使用的内部接口视为稳定公共 API。快照只能由维护者手动运行。
 - `data-sources/kuro-wiki/fixtures/` 当前只保存合成样例，用于验证候选数据的最小规范化与来源状态。
 - `data-sources/kuro-wiki/raw/` 保存按日期生成的目录树、共鸣者、武器、声骸、合鸣效果和敌人原始响应；该目录默认被 Git 忽略。
@@ -14,7 +14,7 @@
 
 当前可运行 `npm run data:validate` 校验资料源清单，运行 `npm run wiki:candidates` 演示合成候选数据规范化，并运行 `npm run wiki:snapshot` 获取可复核的官方目录与正文快照。正文通过官方页面使用的匿名 `getEntryDetail` 只读接口取得，不读取登录令牌或 Cookie。可运行 `npm run wiki:process -- --date=YYYY-MM-DD` 生成带标题、可检索正文和原始 SHA-256 的 candidate 索引；结构化字段解析和 candidate diff 仍待后续实现。
 
-项目 backup 中已有的效果说明只作为候选资料，不构成独立验证来源。正式版本按共鸣者、武器、声骸和合鸣实体记录来源并与 BWiki、WikiWiki 交叉核对，不要求每个倍率重复记录字段级链接；任一来源缺失或数值冲突时保留候选状态并记录差异。图标资产可以独立迁移，不改变效果数据的验证状态。
+项目 backup 中已有的效果说明只作为候选资料，不构成独立验证来源。正式版本按实体记录来源：共鸣者与 BWiki、WikiWiki 交叉核对，武器、声骸和合鸣与 BWiki 交叉核对；不要求每个倍率重复记录字段级链接。任一指定来源缺失或数值冲突时保留候选状态并记录差异。图标资产可以独立迁移，不改变效果数据的验证状态。
 
 ## 快照与正式数据之间的门槛
 

@@ -4,36 +4,53 @@
   top: 0;
   bottom: 0;
   left: calc(var(--label-width) + var(--timeline-inset) + var(--playhead-x));
+  display: flex;
   width: 9px;
+  align-items: flex-start;
+  justify-content: flex-start;
   padding: 0;
   cursor: ew-resize;
   border: 0;
   border-left: 1px solid var(--accent);
   background: transparent;
 }
-.timeline-playhead::before {
-  position: absolute;
+.timeline-playhead-marker {
+  position: sticky;
   top: 0;
-  left: -4px;
+  display: block;
+  width: 7px;
+  height: 7px;
+  flex: 0 0 7px;
+  transform: translateX(-4px);
+}
+.timeline-playhead-marker > i {
+  display: block;
   width: 7px;
   height: 7px;
   background: var(--accent);
-  content: '';
+  transition: background-color 120ms ease;
 }
-.timeline-playhead > span {
+.timeline-playhead-marker > span {
   position: absolute;
   top: 9px;
-  left: 5px;
+  left: 9px;
   display: none;
   width: max-content;
   padding: 2px 5px;
   color: var(--text);
   border: 1px solid var(--border);
-  background: var(--panel-header);
+  border-radius: var(--radius-overlay);
+  background: var(--popover-header);
   font-size: 11px;
   line-height: 1.4;
+  pointer-events: none;
 }
-.timeline-playhead.is-dragging > span {
+.timeline-playhead:hover .timeline-playhead-marker > i,
+.timeline-playhead.is-dragging .timeline-playhead-marker > i {
+  background: var(--accent-hover);
+}
+.timeline-playhead:hover .timeline-playhead-marker > span,
+.timeline-playhead.is-dragging .timeline-playhead-marker > span {
   display: block;
 }
 .timeline-ruler {
@@ -41,7 +58,7 @@
   z-index: var(--z-ruler);
   top: 0;
   height: 27px;
-  border-bottom: 2px solid var(--boundary);
+  border-bottom: 1px solid var(--boundary);
   background: var(--panel-header);
 }
 .timeline-ruler span {
@@ -62,7 +79,7 @@
 }
 .timeline-ruler span.is-labeled {
   color: var(--text);
-  border-left-color: var(--tick-text);
+  border-left-color: var(--text);
 }
 .ruler-spacer,
 .effects-heading {
@@ -76,10 +93,10 @@
 }
 .ruler-spacer {
   position: sticky;
-  z-index: var(--z-sticky-label);
+  z-index: calc(var(--z-sticky-label) + 1);
   top: 0;
   left: 0;
   height: 27px;
-  border-bottom: 2px solid var(--boundary);
+  border-bottom: 1px solid var(--boundary);
   background: var(--panel-header);
 }

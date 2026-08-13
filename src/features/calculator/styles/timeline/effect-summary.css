@@ -4,7 +4,7 @@
   padding: 0;
   color: var(--muted);
   border: 0;
-  border-top: 3px solid var(--accent-divider);
+  border-top: 4px solid var(--page);
   border-bottom: 1px solid var(--divider);
   background: var(--panel-header);
   font-size: 10px;
@@ -26,7 +26,7 @@
   height: 14px;
   fill: none;
   stroke: currentColor;
-  stroke-width: 1.7;
+  stroke-width: var(--icon-stroke);
   transform: rotate(180deg);
 }
 .effects-summary-label svg.is-collapsed {

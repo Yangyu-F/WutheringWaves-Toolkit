@@ -23,9 +23,11 @@
   display: block;
   height: var(--action-height);
   padding: 0;
-  border: 1px solid var(--divider);
-  border-left: 2px solid var(--accent-divider);
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--muted);
+  border-radius: var(--radius-content);
   background: var(--skill);
+  box-shadow: inset 0 1px rgb(255 255 255 / 7%);
   transition:
     background-color 120ms ease,
     border-color 120ms ease;
@@ -41,7 +43,9 @@
   padding: 6px 8px;
   color: var(--text);
   border: 1px solid var(--border);
-  background: var(--panel);
+  border-radius: var(--radius-overlay);
+  background: var(--popover);
+  box-shadow: var(--shadow-popover);
   text-align: left;
   white-space: nowrap;
 }
@@ -72,29 +76,39 @@
   background: var(--skill-hover);
 }
 .timeline-action.is-selected .action-kept {
-  border-color: var(--accent);
-  outline: 1px solid var(--accent);
+  border-color: var(--skill-selected);
+  outline: 1px solid var(--skill-selected);
+  box-shadow:
+    inset 0 1px rgb(255 255 255 / 10%),
+    0 0 0 1px rgb(20 20 22 / 72%);
 }
 .resonator-track.slot-1 .action-kept {
   border-left-color: var(--slot-one);
+  background: var(--slot-one-surface);
 }
 .resonator-track.slot-2 .action-kept {
   border-left-color: var(--slot-two);
+  background: var(--slot-two-surface);
 }
 .resonator-track.slot-3 .action-kept {
   border-left-color: var(--slot-three);
+  background: var(--slot-three-surface);
 }
 .resonator-track.slot-1 .timeline-action:hover .action-kept {
   border-color: var(--slot-one);
+  background: color-mix(in srgb, var(--slot-one-surface) 78%, var(--text));
 }
 .resonator-track.slot-2 .timeline-action:hover .action-kept {
   border-color: var(--slot-two);
+  background: color-mix(in srgb, var(--slot-two-surface) 78%, var(--text));
 }
 .resonator-track.slot-3 .timeline-action:hover .action-kept {
   border-color: var(--slot-three);
+  background: color-mix(in srgb, var(--slot-three-surface) 78%, var(--text));
 }
 .resonator-track .timeline-action.is-selected .action-kept {
-  border-color: var(--accent);
+  border-color: var(--skill-selected);
+  outline-color: var(--skill-selected);
 }
 .timeline-action.is-new .action-kept {
   animation: action-added 700ms ease-out;
@@ -128,7 +142,16 @@
   width: 7px;
   height: 7px;
   border: 1px solid var(--canvas);
-  background: var(--text);
+  background: var(--skill-selected);
   transform: translate(-50%, -50%) rotate(45deg);
   pointer-events: none;
+}
+.resonator-track.slot-1 .timeline-hit {
+  background: var(--slot-one);
+}
+.resonator-track.slot-2 .timeline-hit {
+  background: var(--slot-two);
+}
+.resonator-track.slot-3 .timeline-hit {
+  background: var(--slot-three);
 }

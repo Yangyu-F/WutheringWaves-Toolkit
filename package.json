@@ -20,6 +20,7 @@
     "wiki:snapshot": "tsx scripts/wiki/download-kuro-wiki.ts",
     "wiki:process": "tsx scripts/wiki/process-kuro-wiki.ts",
     "wiki:community-snapshot": "tsx scripts/wiki/download-community-wikis.ts",
+    "wiki:wikiwiki-resonators": "tsx scripts/wiki/download-wikiwiki-resonators.ts",
     "wiki:candidates": "tsx scripts/wiki/normalize-candidates.ts"
   },
   "dependencies": {

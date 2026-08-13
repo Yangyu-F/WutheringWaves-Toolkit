@@ -120,7 +120,7 @@ export default {
     eyebrow: 'Wuthering Waves player toolkit',
     title: 'Choose a tool. Start planning.',
     intro:
-      'Prepare combat configurations in one clear, auditable workspace—from damage planning to resonator, weapon, Echo, and Sonata data.',
+      'Prepare combat configurations in one clear, auditable workspace, from damage planning to resonator, weapon, Echo, and Sonata data.',
     explore: 'View roadmap',
     atlasTitle: 'Data',
     atlasDescription: 'Browse the foundational data used by calculations.',

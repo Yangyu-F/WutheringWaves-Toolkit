@@ -1,7 +1,11 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import type { ActionWindow } from '../../../../../domain/combat'
 import { useTimelineStore } from '../../../stores/timeline'
-import { useTimelineViewportStore } from '../../../stores/timelineViewport'
+import {
+  MAX_TIMELINE_ZOOM,
+  MIN_TIMELINE_ZOOM,
+  useTimelineViewportStore,
+} from '../../../stores/timelineViewport'
 
 export const TIMELINE_INSET = 12
 
@@ -18,9 +22,9 @@ export function useTimelineViewport(getWindows: () => ActionWindow[]) {
     return viewport.value?.querySelector<HTMLElement>('.ruler-spacer')?.offsetWidth ?? 0
   }
   function minimumZoom() {
-    if (!viewport.value) return 1
+    if (!viewport.value) return MIN_TIMELINE_ZOOM
     const availableWidth = Math.max(1, viewport.value.clientWidth - labelWidth() - TIMELINE_INSET)
-    return availableWidth / (timeline.durationMs / 1_000)
+    return Math.max(MIN_TIMELINE_ZOOM, availableWidth / (timeline.durationMs / 1_000))
   }
   function updateViewportMetrics() {
     if (!viewport.value) return
@@ -39,7 +43,10 @@ export function useTimelineViewport(getWindows: () => ActionWindow[]) {
       visibleTrackWidth,
       Math.max(0, TIMELINE_INSET + (anchorTimeMs / 1_000) * oldZoom - viewport.value.scrollLeft),
     )
-    view.zoomPxPerSecond = Math.min(800, Math.max(Math.ceil(minimumZoom()), Math.round(nextZoom)))
+    view.zoomPxPerSecond = Math.min(
+      MAX_TIMELINE_ZOOM,
+      Math.max(Math.ceil(minimumZoom()), Math.round(nextZoom)),
+    )
     await nextTick()
     viewport.value.scrollLeft =
       TIMELINE_INSET + (anchorTimeMs / 1_000) * view.zoomPxPerSecond - anchorOffset
@@ -57,8 +64,8 @@ export function useTimelineViewport(getWindows: () => ActionWindow[]) {
       Math.max(1_000, lastActionEndMs + Math.max(500, lastActionEndMs * 0.05)),
     )
     view.zoomPxPerSecond = Math.max(
-      1,
-      Math.min(800, Math.floor(availableWidth / (fittedEndMs / 1000))),
+      MIN_TIMELINE_ZOOM,
+      Math.min(MAX_TIMELINE_ZOOM, Math.floor(availableWidth / (fittedEndMs / 1000))),
     )
     await nextTick()
     viewport.value.scrollLeft = 0

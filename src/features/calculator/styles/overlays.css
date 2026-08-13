@@ -4,25 +4,29 @@
   inset: 0;
   display: grid;
   place-content: center;
-  background: #0009;
+  background: rgb(10 10 12 / 68%);
 }
 .modal-dialog {
   display: grid;
   width: min(420px, calc(100vw - 32px));
+  overflow: hidden;
   border: 1px solid var(--boundary);
-  background: var(--panel);
+  border-radius: var(--radius-overlay);
+  background: var(--popover);
+  box-shadow: 0 24px 64px rgb(0 0 0 / 46%);
 }
 .modal-dialog.is-small {
   width: min(320px, calc(100vw - 32px));
 }
 .modal-header {
   display: flex;
-  height: 38px;
+  height: 40px;
   align-items: center;
   justify-content: space-between;
   padding-left: 12px;
-  border-bottom: 1px solid var(--border);
-  background: var(--panel-header);
+  border-bottom: 1px solid var(--boundary);
+  background: var(--popover-header);
+  border-radius: var(--radius-overlay) var(--radius-overlay) 0 0;
 }
 .modal-header h2 {
   margin: 0;
@@ -32,7 +36,7 @@
 .modal-close {
   display: grid;
   width: 38px;
-  height: 37px;
+  height: 39px;
   padding: 0;
   place-content: center;
   color: var(--muted);
@@ -48,26 +52,28 @@
   height: 18px;
   fill: none;
   stroke: currentColor;
-  stroke-width: 1.7;
+  stroke-width: var(--icon-stroke);
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 .modal-content {
-  padding: 18px;
+  padding: 20px;
 }
 .modal-footer {
   display: flex;
   justify-content: flex-end;
-  gap: 6px;
-  padding: 10px 12px;
+  gap: 8px;
+  padding: 12px 14px;
   border-top: 1px solid var(--divider);
-  background: var(--panel-header);
+  background: var(--popover-header);
+  border-radius: 0 0 var(--radius-overlay) var(--radius-overlay);
 }
 .modal-footer button {
   min-width: 68px;
-  height: 28px;
+  height: var(--control-height);
   padding: 0 10px;
   border: 1px solid transparent;
+  border-radius: var(--radius-control);
   background: var(--button);
 }
 .modal-footer button:hover {
@@ -122,18 +128,47 @@
   color: var(--text);
   font-size: 22px;
 }
+.welcome-mark {
+  display: flex;
+  height: 22px;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 3px;
+  margin-bottom: 8px;
+}
+.welcome-mark i {
+  display: block;
+  width: 3px;
+  background: var(--accent);
+}
+.welcome-mark i:nth-child(1) {
+  height: 10px;
+}
+.welcome-mark i:nth-child(2) {
+  height: 22px;
+}
+.welcome-mark i:nth-child(3) {
+  height: 15px;
+}
 .project-welcome p {
   margin: 0;
+}
+.project-welcome > span {
+  color: var(--muted);
 }
 .project-welcome button {
   margin: 16px 3px 0;
   padding: 7px 14px;
   border: 1px solid var(--border);
-  border-radius: 0;
+  border-radius: var(--radius-control);
   background: var(--button);
 }
 .project-welcome button:hover {
   background: var(--button-hover);
+}
+.project-welcome button:first-child {
+  color: var(--accent-hover);
+  border-color: var(--accent-divider);
 }
 .welcome-error {
   color: var(--danger);

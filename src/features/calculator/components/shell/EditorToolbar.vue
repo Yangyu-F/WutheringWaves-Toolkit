@@ -123,7 +123,7 @@ function requestProjectDelete() {
       <button
         class="project-edit"
         type="button"
-        :title="t('workspace.renameProject')"
+        :data-tooltip="t('workspace.renameProject')"
         :aria-label="t('workspace.renameProject')"
         @mousedown.prevent
         @click="editingName ? finishRename() : beginRename()"

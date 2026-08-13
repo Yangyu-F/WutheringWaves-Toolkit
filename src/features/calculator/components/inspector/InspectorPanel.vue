@@ -36,6 +36,7 @@ const definition = computed(() =>
         :label="t('workspace.endTime')"
         :model-value="action.trimmedEndTimeMs ?? naturalEndTimeMs"
         :min="action.startTimeMs"
+        :max="naturalEndTimeMs"
         :step="timeline.snapMs"
         unit="ms"
         @update:model-value="timeline.trimAction(action.id, $event)"

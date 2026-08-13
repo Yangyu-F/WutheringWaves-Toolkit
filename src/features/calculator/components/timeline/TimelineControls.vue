@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import SelectMenu from '../ui/SelectMenu.vue'
 import ToolbarField from '../ui/ToolbarField.vue'
+import { MAX_TIMELINE_ZOOM, MIN_TIMELINE_ZOOM } from '../../stores/timelineViewport'
 const props = defineProps<{ durationSeconds: number; zoomPxPerSecond: number }>()
 const emit = defineEmits<{
   'update:durationSeconds': [value: number]
@@ -11,11 +12,19 @@ const emit = defineEmits<{
 }>()
 const { t } = useI18n()
 const zoomSlider = computed(() =>
-  Math.round((Math.log(props.zoomPxPerSecond) / Math.log(800)) * 1000),
+  Math.round(
+    (Math.log(props.zoomPxPerSecond / MIN_TIMELINE_ZOOM) /
+      Math.log(MAX_TIMELINE_ZOOM / MIN_TIMELINE_ZOOM)) *
+      1000,
+  ),
 )
 const zoomProgress = computed(() => `${zoomSlider.value / 10}%`)
 function updateZoom(rawValue: string) {
-  emit('update:zoomPxPerSecond', Math.max(1, Math.round(800 ** (Number(rawValue) / 1000))))
+  const ratio = Number(rawValue) / 1000
+  emit(
+    'update:zoomPxPerSecond',
+    Math.round(MIN_TIMELINE_ZOOM * (MAX_TIMELINE_ZOOM / MIN_TIMELINE_ZOOM) ** ratio),
+  )
 }
 const durationOptions = [30, 60, 120].map((value) => ({ label: `${value}s`, value }))
 </script>

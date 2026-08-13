@@ -116,10 +116,19 @@ export const useTimelineStore = defineStore('calculator-timeline', {
       const action = this.actions.find((item) => item.id === id)
       if (!action) return
       if (checkpoint) this.checkpoint()
-      action.trimmedEndTimeMs =
-        rawEndTimeMs === undefined
-          ? undefined
-          : Math.max(action.startTimeMs, Math.min(this.durationMs, preciseTime(rawEndTimeMs)))
+      if (rawEndTimeMs === undefined) {
+        action.trimmedEndTimeMs = undefined
+        return
+      }
+      const naturalEndTimeMs = Math.min(
+        this.durationMs,
+        action.startTimeMs + actionDurationMs(action.actionId),
+      )
+      const trimmedEndTimeMs = Math.max(
+        action.startTimeMs,
+        Math.min(naturalEndTimeMs, preciseTime(rawEndTimeMs)),
+      )
+      action.trimmedEndTimeMs = trimmedEndTimeMs < naturalEndTimeMs ? trimmedEndTimeMs : undefined
     },
     removeAction(id: string) {
       this.checkpoint()

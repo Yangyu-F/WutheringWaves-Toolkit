@@ -2,16 +2,18 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 0;
-  margin: 9px 0;
+  margin: 0 0 10px;
   background: var(--input);
-  border-bottom: 1px solid var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  overflow: hidden;
 }
 .skill-library {
   border-bottom: 0;
 }
 .skill-library nav button {
   position: relative;
-  height: 26px;
+  height: var(--control-height);
   border: 1px solid transparent;
   border-radius: 0;
   background: transparent;
@@ -25,7 +27,7 @@
   background: var(--control-hover);
 }
 .skill-library nav button.is-active {
-  color: var(--accent-hover);
+  color: var(--text);
   background: var(--panel-header);
 }
 .skill-library nav button.is-active::after {
@@ -39,17 +41,18 @@
 }
 .skill-list {
   display: grid;
-  gap: 3px;
+  gap: 4px;
 }
 .skill-list > button {
   position: relative;
   min-height: 35px;
   padding: 5px 8px;
   border: 0;
-  border-radius: 0;
+  border-radius: var(--radius-content);
   background: var(--button);
   text-align: left;
   transition: background-color 120ms ease;
+  box-shadow: inset 0 1px rgb(255 255 255 / 5%);
 }
 .skill-list > button::before {
   position: absolute;
@@ -64,7 +67,7 @@
   background: var(--button-hover);
 }
 .skill-list > button:hover::before {
-  background: var(--accent-divider);
+  background: var(--muted);
 }
 .skill-list > button:active {
   transform: translateY(1px);

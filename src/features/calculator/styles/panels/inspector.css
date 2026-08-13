@@ -3,31 +3,40 @@
   height: 17px;
   fill: none;
   stroke: currentColor;
-  stroke-width: 1.7;
+  stroke-width: var(--icon-stroke);
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 .inspector-content {
   height: 100%;
   min-height: 0;
-  padding: 14px;
+  padding: 16px 14px;
 }
 .inspector-content h2 {
-  margin: 4px 0 18px;
+  margin: 2px 0 16px;
   font-size: 14px;
   font-weight: 600;
 }
 .inspector-content label {
   display: block;
-  margin: 10px 0;
+  margin: 12px 0 0;
   color: var(--muted);
   font-size: 11px;
   font-weight: 400;
 }
 .inspector-content input {
   width: 100%;
-  margin-top: 4px;
+  height: var(--control-height);
+  margin-top: 5px;
   padding: 0 7px;
+}
+.inspector-content input[type='number'] {
+  appearance: textfield;
+}
+.inspector-content input[type='number']::-webkit-inner-spin-button,
+.inspector-content input[type='number']::-webkit-outer-spin-button {
+  margin: 0;
+  appearance: none;
 }
 .inspector-content small {
   display: block;
@@ -40,17 +49,18 @@
   align-items: center;
   justify-content: center;
   gap: 7px;
-  margin-top: 9px;
-  padding: 7px;
+  min-height: var(--control-height);
+  margin-top: 12px;
+  padding: 5px 7px;
   border: 1px solid transparent;
-  border-radius: 0;
+  border-radius: var(--radius-control);
   background: var(--button);
   transition:
     color 120ms ease,
     background-color 120ms ease;
 }
 .inspector-content button:hover {
-  color: var(--accent-hover);
+  color: var(--text);
   background: var(--button-hover);
 }
 .inspector-content-region,

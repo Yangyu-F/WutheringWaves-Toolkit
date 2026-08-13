@@ -15,12 +15,11 @@ defineEmits<{ select: [] }>()
     class="resonator-label"
     :class="[`slot-${slotIndex}`, { 'is-selected': selected }]"
     :style="{ height: `${height}px` }"
+    :aria-label="label"
     @click="$emit('select')"
   >
     <span class="track-avatar"
-      ><img v-if="image" :src="image" alt="" /><ToolbarIcon v-else name="add" /></span
-    ><span class="track-character"
-      ><strong>{{ label }}</strong></span
-    >
+      ><img v-if="image" :src="image" alt="" /><ToolbarIcon v-else name="add"
+    /></span>
   </button>
 </template>

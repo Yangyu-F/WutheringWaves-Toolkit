@@ -1,6 +1,6 @@
 :root {
-  color: #e9e7e1;
-  background: #18181a;
+  color: #eceae4;
+  background: #171719;
   font-family:
     system-ui,
     -apple-system,
@@ -14,42 +14,46 @@
     sans-serif;
   font-size: 13px;
   line-height: 1.45;
-  --page: #18181a;
-  --header: #202023;
-  --rail: #1c1c1f;
-  --panel: #232326;
-  --panel-header: #29292d;
+  --page: #171719;
+  --header: #29292d;
+  --rail: #1d1d20;
+  --panel: #222225;
+  --panel-header: #2a2a2e;
+  --popover: #303034;
+  --popover-header: #36363b;
   --canvas: #141416;
-  --track: #19191c;
-  --track-alt: #1c1c1f;
-  --input: #1d1d20;
-  --control: #2c2c30;
-  --control-hover: #343439;
-  --control-active: #3c3a34;
-  --control-disabled: #262629;
-  --button: #35353a;
-  --button-hover: #414147;
-  --border: #38383d;
-  --divider: #2b2b2f;
-  --boundary: #505056;
-  --tick-major: #77736a;
-  --tick-minor: #514f4a;
-  --tick-text: #c8c5bd;
-  --text: #e9e7e1;
-  --muted: #b2b0aa;
-  --subtle: #85847f;
+  --track: #18181b;
+  --track-alt: #1b1b1e;
+  --input: #19191c;
+  --control: #2d2d31;
+  --control-hover: #38383d;
+  --control-active: #343438;
+  --control-disabled: #27272a;
+  --button: #36363b;
+  --button-hover: #424248;
+  --border: #45454b;
+  --divider: #2d2d31;
+  --boundary: #5b5b62;
+  --tick-major: #7e7b72;
+  --tick-minor: #4b4a46;
+  --tick-text: #d1cec5;
+  --text: #eceae4;
+  --muted: #bbb8b0;
+  --subtle: #95938d;
   --accent: #c6a752;
   --accent-hover: #d2b866;
-  --accent-soft: rgb(198 167 82 / 10%);
   --accent-divider: #4a4538;
-  --skill: #3a3938;
-  --skill-hover: #45433f;
+  --skill: #353536;
+  --skill-hover: #424143;
+  --skill-selected: #e5e1d7;
   --slot-one: #b98262;
+  --slot-one-surface: #43332d;
   --slot-two: #8e83ad;
+  --slot-two-surface: #373342;
   --slot-three: #6f9c91;
+  --slot-three-surface: #2e3d3a;
   --danger: #d97976;
   --danger-soft: rgb(217 121 118 / 9%);
-  --success: #7fa88a;
   --buff: #383731;
   --debuff: #3a3031;
   --scrollbar-size: 8px;
@@ -64,6 +68,13 @@
   --z-toolbar: 100;
   --z-popover: 120;
   --z-dialog: 200;
+  --shadow-popover: 0 14px 32px rgb(0 0 0 / 32%);
+  --radius-control: 3px;
+  --radius-content: 4px;
+  --radius-overlay: 5px;
+  --control-height: 28px;
+  --compact-control-height: 24px;
+  --icon-stroke: 1.65;
 }
 
 * {
@@ -82,11 +93,19 @@ input,
 select {
   color: inherit;
   font: inherit;
+  border-radius: var(--radius-control);
 }
 button {
   cursor: pointer;
   font-weight: 500;
   user-select: none;
+}
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+summary:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: -1px;
 }
 input,
 select {

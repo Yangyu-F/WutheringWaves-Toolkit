@@ -218,10 +218,12 @@ onBeforeUnmount(() => {
             :class="{ 'is-dragging': playheadDragging }"
             type="button"
             :aria-label="`${(playheadMs / 1000).toFixed(3)}s`"
-            :title="`${(playheadMs / 1000).toFixed(3)}s`"
             @pointerdown.stop="beginPlayheadDrag"
           >
-            <span>{{ (playheadMs / 1000).toFixed(3) }}s</span>
+            <span class="timeline-playhead-marker" aria-hidden="true">
+              <i />
+              <span>{{ (playheadMs / 1000).toFixed(3) }}s</span>
+            </span>
           </button>
         </div>
       </CustomScrollArea>
