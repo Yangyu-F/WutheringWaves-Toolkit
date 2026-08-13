@@ -61,6 +61,7 @@
   --scrollbar-thumb-hover: rgb(233 231 225 / 36%);
   --scrollbar-thumb-active: rgb(233 231 225 / 50%);
   --z-action: 10;
+  --z-playhead-line: 30;
   --z-ruler: 20;
   --z-playhead: 30;
   --z-sticky-label: 40;

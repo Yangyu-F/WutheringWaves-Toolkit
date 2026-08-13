@@ -1,16 +1,22 @@
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
-import { phaseOneEntities, yangyangActions } from '../../../data/versions/v3_5/phaseOne'
+import {
+  phaseOneEntities,
+  yangyangActions,
+  yangyangMechanics,
+} from '../../../data/versions/v3_5/phaseOne'
 import type { SimulationInput } from '../../../domain/combat'
 import { echoFixedMainStats } from '../../../domain/loadout'
 import type { EchoStatKey } from '../../../domain/loadout'
 import { simulateDamage } from '../../../simulator/simulate'
 import { useCalculatorProjectStore } from '../stores/project'
+import { useProjectLibraryStore } from '../stores/projectLibrary'
 import { useTimelineStore } from '../stores/timeline'
 
 export function useCalculatorSimulation() {
   const projectStore = useCalculatorProjectStore()
   const timelineStore = useTimelineStore()
+  const libraryStore = useProjectLibraryStore()
   const timelineRefs = storeToRefs(timelineStore)
   const { settings, loadout } = projectStore
 
@@ -32,6 +38,18 @@ export function useCalculatorSimulation() {
     resonanceChain: settings.resonanceChain,
     weaponRefinement: settings.weaponRefinement,
     criticalMode: settings.criticalMode,
+    initialResources: { liuxiang: settings.initialLiuxiang },
+    initialActiveSlotId: 'slot-1',
+    switches: timelineStore.switches,
+    team: (libraryStore.activeProject?.team ?? [])
+      .filter((slot) => slot.resonatorId)
+      .map((slot) => ({
+        slotId: slot.id,
+        resonatorId: slot.resonatorId!,
+        weaponId: slot.weaponId,
+        mainEchoId: slot.mainEchoId,
+        sonataIds: slot.id === 'slot-1' ? [loadout.sonataId] : [],
+      })),
     enemy: {
       level: settings.enemyLevel,
       resistances: { aero: settings.aeroResistancePercent / 100 },
@@ -67,7 +85,9 @@ export function useCalculatorSimulation() {
     actions: timelineRefs.actions.value,
   }))
 
-  const result = computed(() => simulateDamage(simulationInput.value, yangyangActions))
+  const result = computed(() =>
+    simulateDamage(simulationInput.value, yangyangActions, yangyangMechanics),
+  )
 
   return { projectStore, timelineStore, timelineRefs, settings, loadout, result }
 }

@@ -1,8 +1,23 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { ActionWindow, CompiledHit, PlannedAction } from '../../../../domain/combat'
+import type {
+  ActionDefinition,
+  ActionWindow,
+  CompiledHit,
+  MechanicEvent,
+  PlannedAction,
+  ResourcePoint,
+  StatusInterval,
+  TimelineDiagnostic,
+} from '../../../../domain/combat'
 import { assignActionLanes } from '../../layout/assignActionLanes'
+import {
+  ACTION_BLOCK_GAP,
+  DEFAULT_ACTION_LANES,
+  MECHANIC_TRACK_HEIGHT,
+} from '../../layout/timelineDimensions'
 import ActionBlock from './ActionBlock.vue'
+import MechanicStrip from './MechanicStrip.vue'
 
 const props = defineProps<{
   actions: PlannedAction[]
@@ -18,6 +33,11 @@ const props = defineProps<{
   viewportDurationMs: number
   newActionId?: string
   inset: number
+  definitions: Map<string, ActionDefinition>
+  diagnostics: TimelineDiagnostic[]
+  resourcePoints: ResourcePoint[]
+  mechanicEvents: MechanicEvent[]
+  statuses: StatusInterval[]
 }>()
 defineEmits<{
   select: [id: string]
@@ -38,9 +58,12 @@ const lanePlacements = computed(() =>
 const laneFor = (id: string) =>
   lanePlacements.value.find((item) => item.actionId === id)?.laneIndex ?? 0
 const laneCount = computed(() =>
-  Math.max(3, Math.max(-1, ...lanePlacements.value.map((item) => item.laneIndex)) + 1),
+  Math.max(
+    DEFAULT_ACTION_LANES,
+    Math.max(-1, ...lanePlacements.value.map((item) => item.laneIndex)) + 1,
+  ),
 )
-const laneHeight = computed(() => props.height / laneCount.value)
+const laneHeight = computed(() => (props.height - MECHANIC_TRACK_HEIGHT) / laneCount.value)
 const visibleActions = computed(() => {
   const minimum = props.viewportStartMs - 1_000
   const maximum = props.viewportStartMs + props.viewportDurationMs + 1_000
@@ -84,14 +107,31 @@ const visibleActions = computed(() => {
           .filter((hit) => hit.actionInstanceId === action.id)
           .map((hit) => ((hit.timeMs - action.startTimeMs) / 1000) * zoomPxPerSecond)
       "
-      :top="laneFor(action.id) * laneHeight + 2"
-      :height="Math.max(8, laneHeight - 4)"
+      :top="laneFor(action.id) * laneHeight + ACTION_BLOCK_GAP / 2"
+      :height="Math.max(8, laneHeight - ACTION_BLOCK_GAP)"
       :selected="selectedActionId === action.id"
       :newly-added="newActionId === action.id"
       :trimmed="windowFor(action.id)?.trimmed ?? false"
+      :resource-change="
+        (definitions.get(action.actionId)?.resourceChanges ?? []).reduce(
+          (total, change) => total + change.amount,
+          0,
+        )
+      "
+      :has-healing="Boolean(definitions.get(action.actionId)?.healing?.length)"
+      :warning="diagnostics.some((item) => item.actionInstanceIds.includes(action.id))"
       @select="$emit('select', $event)"
       @drag-start="(event, item) => $emit('dragStart', event, item)"
       @trim-start="(event, item) => $emit('trimStart', event, item)"
+    />
+    <MechanicStrip
+      :resource-points="resourcePoints"
+      :events="mechanicEvents"
+      :statuses="statuses"
+      :width="width"
+      :inset="inset"
+      :zoom-px-per-second="zoomPxPerSecond"
+      :height="MECHANIC_TRACK_HEIGHT"
     />
   </div>
 </template>

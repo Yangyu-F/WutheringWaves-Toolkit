@@ -43,6 +43,23 @@
   display: grid;
   gap: 4px;
 }
+.skill-state-summary {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 6px 8px;
+  color: var(--muted);
+  border: 1px solid var(--divider);
+  border-radius: var(--radius-control);
+  background: var(--control);
+  font-size: 10px;
+  user-select: none;
+}
+.skill-list button.has-warning {
+  border-color: color-mix(in srgb, var(--danger) 55%, var(--border));
+}
+.skill-list button.has-warning small {
+  color: var(--danger);
+}
 .skill-list > button {
   position: relative;
   min-height: 35px;

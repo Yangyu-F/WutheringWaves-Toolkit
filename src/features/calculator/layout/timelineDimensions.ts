@@ -1,0 +1,5 @@
+export const TIMELINE_RULER_HEIGHT = 27
+export const RESONATOR_TRACK_COUNT = 3
+export const DEFAULT_ACTION_LANES = 3
+export const MECHANIC_TRACK_HEIGHT = 18
+export const ACTION_BLOCK_GAP = 4

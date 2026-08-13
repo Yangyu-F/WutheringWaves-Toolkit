@@ -21,6 +21,7 @@ describe('timeline editor store', () => {
       durationMs: 240_000,
       snapMs: 1,
       actions: [],
+      switches: [],
     })
 
     expect(store.durationMs).toBe(120_000)
@@ -34,6 +35,18 @@ describe('timeline editor store', () => {
     expect(store.actions[0]?.startTimeMs).toBe(0)
     store.redo()
     expect(store.actions[0]?.startTimeMs).toBe(176)
+  })
+
+  it('persists switch events and includes them in undo and redo history', () => {
+    const store = useTimelineStore()
+    store.addSwitch('slot-2', 1_250)
+    expect(store.switches).toEqual([
+      { id: 'switch-5', fromSlotId: 'slot-1', toSlotId: 'slot-2', timeMs: 1_250 },
+    ])
+    store.undo()
+    expect(store.switches).toEqual([])
+    store.redo()
+    expect(store.document().switches).toHaveLength(1)
   })
 
   it('adds a skill at the center of the visible timeline window', () => {

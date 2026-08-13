@@ -9,6 +9,7 @@ export const useTimelineViewportStore = defineStore('calculator-timeline-viewpor
     zoomPxPerSecond: 80,
     viewportStartMs: 0,
     viewportDurationMs: 0,
+    playheadMs: 0,
     activeResonatorSlotId: 'slot-1' as ResonatorSlotId,
   }),
   actions: {
@@ -18,6 +19,9 @@ export const useTimelineViewportStore = defineStore('calculator-timeline-viewpor
     },
     selectResonator(slotId: ResonatorSlotId) {
       this.activeResonatorSlotId = slotId
+    },
+    setPlayhead(timeMs: number, durationMs: number) {
+      this.playheadMs = Math.max(0, Math.min(durationMs, timeMs))
     },
   },
 })

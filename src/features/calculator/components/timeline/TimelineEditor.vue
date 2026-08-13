@@ -1,15 +1,27 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import yangyangIcon from '../../../../assets/game/characters/yangyang.webp'
 import { yangyangActions } from '../../../../data/versions/v3_5/phaseOne'
-import type { ActionWindow, BuffInterval, CompiledHit } from '../../../../domain/combat'
+import type {
+  ActionWindow,
+  BuffInterval,
+  CompiledHit,
+  MechanicEvent,
+  ResourcePoint,
+  StatusInterval,
+  TimelineDiagnostic,
+} from '../../../../domain/combat'
 import { assignActionLanes } from '../../layout/assignActionLanes'
+import {
+  ACTION_BLOCK_GAP,
+  DEFAULT_ACTION_LANES,
+  MECHANIC_TRACK_HEIGHT,
+} from '../../layout/timelineDimensions'
 import { useTimelineStore } from '../../stores/timeline'
 import { useTimelineViewportStore, type ResonatorSlotId } from '../../stores/timelineViewport'
 import EffectTracks from '../effects/EffectTracks.vue'
 import CustomScrollArea from '../ui/CustomScrollArea.vue'
-import EffectsSummary from './EffectsSummary.vue'
 import ResonatorLabel from './ResonatorLabel.vue'
 import ResonatorTrack from './ResonatorTrack.vue'
 import TimelineControls from './TimelineControls.vue'
@@ -23,13 +35,16 @@ const props = defineProps<{
   windows: ActionWindow[]
   hits: CompiledHit[]
   buffs: BuffInterval[]
+  resources: ResourcePoint[]
+  mechanicEvents: MechanicEvent[]
+  diagnostics: TimelineDiagnostic[]
+  statuses: StatusInterval[]
   selectedActionId?: string
 }>()
 const emit = defineEmits<{ select: [id?: string] }>()
 const timeline = useTimelineStore()
 const view = useTimelineViewportStore()
 const { t } = useI18n()
-const buffsCollapsed = ref(localStorage.getItem('wuwa-calculator:buffs-collapsed') === 'true')
 let messageTimer: ReturnType<typeof setTimeout> | undefined
 let addedHighlightTimer: ReturnType<typeof setTimeout> | undefined
 
@@ -59,6 +74,7 @@ const durationSeconds = computed({
   },
 })
 const actionNames = new Map(yangyangActions.map((action) => [action.id, action.name]))
+const actionDefinitions = new Map(yangyangActions.map((action) => [action.id, action]))
 const labels = computed(() => [
   t('calculator.yangyang'),
   `${t('calculator.resonator')} 2`,
@@ -80,12 +96,11 @@ function slotHeight(slot: number) {
         action.startTimeMs,
     })),
   )
-  const laneCount = Math.max(3, Math.max(-1, ...placements.map((item) => item.laneIndex)) + 1)
-  return baseActionHeight.value * laneCount
-}
-function toggleBuffs() {
-  buffsCollapsed.value = !buffsCollapsed.value
-  localStorage.setItem('wuwa-calculator:buffs-collapsed', String(buffsCollapsed.value))
+  const laneCount = Math.max(
+    DEFAULT_ACTION_LANES,
+    Math.max(-1, ...placements.map((item) => item.laneIndex)) + 1,
+  )
+  return baseActionHeight.value * laneCount + MECHANIC_TRACK_HEIGHT
 }
 function selectAfterRemoval(id: string) {
   const removed = timeline.actions.find((action) => action.id === id)
@@ -116,6 +131,19 @@ watch(
   (message) => {
     clearTimeout(messageTimer)
     if (message) messageTimer = setTimeout(() => (timeline.operationMessage = ''), 2_800)
+  },
+)
+watch(
+  () => view.playheadMs,
+  (timeMs) => {
+    if (!viewport.value) return
+    const x = TIMELINE_INSET + (timeMs / 1000) * view.zoomPxPerSecond
+    const left = viewport.value.scrollLeft
+    const right = left + viewport.value.clientWidth
+    if (x < left + TIMELINE_INSET || x > right - 40) {
+      viewport.value.scrollTo({ left: Math.max(0, x - viewport.value.clientWidth / 2) })
+      updateViewportMetrics()
+    }
   },
 )
 onBeforeUnmount(() => {
@@ -193,23 +221,28 @@ onBeforeUnmount(() => {
               :viewport-start-ms="view.viewportStartMs"
               :viewport-duration-ms="view.viewportDurationMs"
               :new-action-id="timeline.lastAddedActionId"
-              @select="emit('select', $event)"
+              :definitions="actionDefinitions"
+              :diagnostics="diagnostics"
+              :resource-points="
+                resources.filter((point) => point.resonatorSlotId === `slot-${index + 1}`)
+              "
+              :mechanic-events="
+                mechanicEvents.filter((event) => event.resonatorSlotId === `slot-${index + 1}`)
+              "
+              :statuses="
+                statuses.filter((status) => status.resonatorSlotId === `slot-${index + 1}`)
+              "
+              @select="emit('select', selectedActionId === $event ? undefined : $event)"
               @drag-start="beginDrag"
               @trim-start="beginTrim"
             />
           </template>
-          <EffectsSummary
-            :label="t('workspace.buffs')"
-            :collapsed="buffsCollapsed"
-            @toggle="toggleBuffs"
-          />
           <EffectTracks
-            v-if="!buffsCollapsed"
             :buffs="buffs"
             :width="width + TIMELINE_INSET"
             :inset="TIMELINE_INSET"
             :zoom-px-per-second="view.zoomPxPerSecond"
-            :buff-height="baseActionHeight / 2"
+            :buff-height="Math.max(8, (baseActionHeight - ACTION_BLOCK_GAP) / 2)"
             :viewport-start-ms="view.viewportStartMs"
             :viewport-duration-ms="view.viewportDurationMs"
           />

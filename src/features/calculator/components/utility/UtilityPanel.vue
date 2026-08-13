@@ -12,7 +12,10 @@ defineProps<{
   selectedActionId?: string
   naturalEndTimeMs?: number
 }>()
-const emit = defineEmits<{ delete: [id: string] }>()
+const emit = defineEmits<{
+  delete: [id: string]
+  focusDiagnostic: [actionId: string, timeMs: number]
+}>()
 const { t } = useI18n()
 </script>
 
@@ -26,7 +29,11 @@ const { t } = useI18n()
           :natural-end-time-ms="naturalEndTimeMs"
           @delete="emit('delete', $event)"
         />
-        <ResultsDock v-else :result="result" />
+        <ResultsDock
+          v-else
+          :result="result"
+          @focus-diagnostic="(actionId, timeMs) => emit('focusDiagnostic', actionId, timeMs)"
+        />
       </ScrollRegion>
     </PanelShell>
   </aside>

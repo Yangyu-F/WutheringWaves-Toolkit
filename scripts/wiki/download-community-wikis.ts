@@ -8,6 +8,15 @@ const execFileAsync = promisify(execFile)
 const DEFAULT_DELAY_MS = 1_500
 const DEFAULT_RETRIES = 3
 
+interface BwikiTitleOverride {
+  title: string
+  evidenceUrl: string
+  verifiedAt: string
+  reason: string
+}
+
+type BwikiTitleOverrides = Record<string, BwikiTitleOverride>
+
 const phaseOneWikiWikiSources = [
   {
     provider: 'bwiki',
@@ -74,12 +83,17 @@ function officialEntryId(content: {
 }
 
 async function buildSources(snapshotDate: string) {
+  const titleOverrides = JSON.parse(
+    await readFile(resolve('scripts/wiki/mappings/bwiki-title-overrides.json'), 'utf8'),
+  ) as BwikiTitleOverrides
   const result: Array<{
     provider: string
     entityId: string
     entityType: string
+    officialTitle: string
     title: string
     url: string
+    titleOverride: BwikiTitleOverride | null
   }> = []
   for (const catalogue of bwikiCatalogues) {
     const path = resolve('data-sources/kuro-wiki/raw', snapshotDate, catalogue.file)
@@ -87,18 +101,27 @@ async function buildSources(snapshotDate: string) {
     for (const record of envelope.data?.results?.records ?? []) {
       if (!record.name) continue
       const content = record.content ?? {}
+      const officialTitle = `${catalogue.prefix}/${record.name}`
+      const titleOverride = titleOverrides[officialTitle] ?? null
+      const title = titleOverride?.title ?? officialTitle
       result.push({
         provider: 'bwiki',
         entityId:
           officialEntryId(content) ?? createHash('sha256').update(record.name).digest('hex'),
         entityType: catalogue.entityType,
-        title: `${catalogue.prefix}/${record.name}`,
-        url: `https://wiki.biligame.com/wutheringwaves/${catalogue.prefix}/${record.name}`,
+        officialTitle,
+        title,
+        url: `https://wiki.biligame.com/wutheringwaves/${title}`,
+        titleOverride,
       })
     }
   }
   if (readFlag('include-wikiwiki-phase-one') === 'true') {
-    result.push(...phaseOneWikiWikiSources.filter((source) => source.provider === 'wikiwiki'))
+    result.push(
+      ...phaseOneWikiWikiSources
+        .filter((source) => source.provider === 'wikiwiki')
+        .map((source) => ({ ...source, officialTitle: source.title, titleOverride: null })),
+    )
   }
   return result
 }
@@ -189,6 +212,15 @@ function hasBwikiRevision(payload: string): boolean {
   }
 }
 
+function bwikiResponseTitle(payload: string): string | undefined {
+  try {
+    const parsed = JSON.parse(payload) as { query?: { pages?: Array<{ title?: string }> } }
+    return parsed.query?.pages?.[0]?.title
+  } catch {
+    return undefined
+  }
+}
+
 async function main() {
   const snapshotDate = readFlag('date') ?? new Date().toISOString().slice(0, 10)
   if (!/^\d{4}-\d{2}-\d{2}$/.test(snapshotDate)) {
@@ -196,15 +228,23 @@ async function main() {
   }
   const delayMs = positiveInteger(readFlag('delay-ms'), DEFAULT_DELAY_MS, 'delay-ms')
   const retries = positiveInteger(readFlag('retries'), DEFAULT_RETRIES, 'retries')
+  const preferApi = readFlag('prefer-api') === 'true'
+  const maxRequests = positiveInteger(
+    readFlag('max-requests'),
+    Number.MAX_SAFE_INTEGER,
+    'max-requests',
+  )
   const root = resolve('data-sources/community-wikis/raw', snapshotDate)
   await mkdir(root, { recursive: true })
   const sources = await buildSources(snapshotDate)
 
   const files = []
   const missing = []
+  const legacyHtmlPending = []
   let blocked: { provider: string; url: string; reason: string } | null = null
   let stopRequests = false
   let requested = 0
+  const bwikiPayloadsByTitle = new Map<string, { content: string; headers?: string }>()
   for (const [index, source] of sources.entries()) {
     const providerDirectory = resolve(root, source.provider)
     await mkdir(providerDirectory, { recursive: true })
@@ -220,15 +260,30 @@ async function main() {
     const cachedHtml = await readFile(htmlPath, 'utf8').catch(() => undefined)
     const cachedApi = await readFile(apiPath, 'utf8').catch(() => undefined)
     const cachedMissing = await readFile(missingPath, 'utf8').catch(() => undefined)
-    if (cachedMissing && !hasBwikiRevision(cachedMissing)) {
+    if (preferApi && cachedHtml && !cachedApi && !isChallengePage(cachedHtml)) {
+      legacyHtmlPending.push({
+        ...source,
+        path: htmlRelativePath,
+        bytes: Buffer.byteLength(cachedHtml),
+        sha256: createHash('sha256').update(cachedHtml).digest('hex'),
+        reason: 'Rendered HTML is cached and awaits a MediaWiki revision JSON upgrade.',
+      })
+    }
+    if (
+      cachedMissing &&
+      !hasBwikiRevision(cachedMissing) &&
+      bwikiResponseTitle(cachedMissing) === source.title
+    ) {
       missing.push({ ...source, reason: 'MediaWiki API page or revision missing' })
       continue
     }
-    const cachedContent = cachedHtml ?? cachedApi
-    const cachedPath = cachedHtml ? htmlRelativePath : apiRelativePath
-    const cachedHeadersCandidates = cachedHtml
-      ? [htmlHeadersRelativePath, legacyHeadersRelativePath]
-      : [apiHeadersRelativePath, legacyHeadersRelativePath]
+    const cachedContent = cachedApi ?? (preferApi ? undefined : cachedHtml)
+    const cachedPath = cachedApi ? apiRelativePath : htmlRelativePath
+    const cachedHeadersCandidates = cachedApi
+      ? [apiHeadersRelativePath, legacyHeadersRelativePath]
+      : cachedHtml
+        ? [htmlHeadersRelativePath, legacyHeadersRelativePath]
+        : [apiHeadersRelativePath, legacyHeadersRelativePath]
     let cachedHeaders: string | undefined
     let cachedHeadersRelativePath = cachedHeadersCandidates[0]!
     for (const candidate of cachedHeadersCandidates) {
@@ -241,8 +296,11 @@ async function main() {
     if (
       cachedContent &&
       !isChallengePage(cachedContent) &&
-      (cachedHtml || hasBwikiRevision(cachedContent))
+      ((cachedHtml && !preferApi) || hasBwikiRevision(cachedContent))
     ) {
+      if (source.provider === 'bwiki') {
+        bwikiPayloadsByTitle.set(source.title, { content: cachedContent, headers: cachedHeaders })
+      }
       files.push({
         ...source,
         path: cachedPath,
@@ -258,8 +316,34 @@ async function main() {
       })
       continue
     }
+    const sharedBwikiPayload =
+      source.provider === 'bwiki' ? bwikiPayloadsByTitle.get(source.title) : undefined
+    if (sharedBwikiPayload) {
+      await writeFile(apiPath, sharedBwikiPayload.content, 'utf8')
+      if (sharedBwikiPayload.headers) {
+        await writeFile(resolve(root, apiHeadersRelativePath), sharedBwikiPayload.headers, 'utf8')
+      }
+      await unlink(missingPath).catch(() => undefined)
+      files.push({
+        ...source,
+        path: apiRelativePath,
+        headersPath: sharedBwikiPayload.headers ? apiHeadersRelativePath : null,
+        bytes: Buffer.byteLength(sharedBwikiPayload.content),
+        sha256: createHash('sha256').update(sharedBwikiPayload.content).digest('hex'),
+        etag: sharedBwikiPayload.headers ? headerValue(sharedBwikiPayload.headers, 'etag') : null,
+        lastModified: sharedBwikiPayload.headers
+          ? headerValue(sharedBwikiPayload.headers, 'last-modified')
+          : null,
+        reused: true,
+      })
+      continue
+    }
     if (stopRequests) {
       missing.push({ ...source, reason: 'Not requested after provider block or rate limit' })
+      continue
+    }
+    if (requested >= maxRequests) {
+      missing.push({ ...source, reason: 'Not requested after reaching --max-requests.' })
       continue
     }
     if (requested > 0) await delay(delayMs)
@@ -308,7 +392,9 @@ async function main() {
       continue
     }
     await writeFile(outputPath, html, 'utf8')
+    await unlink(missingPath).catch(() => undefined)
     const headers = await readFile(headersPath, 'utf8')
+    if (usesBwikiApi) bwikiPayloadsByTitle.set(source.title, { content: html, headers })
     files.push({
       ...source,
       path: relativePath,
@@ -332,6 +418,7 @@ async function main() {
       'All official resonator, weapon, echo, and sonata catalogue entities for BWiki; optional Phase 1 WikiWiki resonator',
     purpose: 'Community cross-check for names, aliases, max-level stats, and effects',
     files,
+    legacyHtmlPending,
     missing,
     blocked,
     requested,

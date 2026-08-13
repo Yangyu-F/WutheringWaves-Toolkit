@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import type { PlannedAction } from '../../../domain/combat'
+import type { PlannedAction, PlannedSwitchEvent } from '../../../domain/combat'
 import { canPlaceInterval, findAvailableStart } from '../layout/actionOverlap'
 import {
   actionDurationMs,
@@ -14,6 +14,13 @@ export { timelineDocumentSchema, type TimelineDocument } from '../timeline/schem
 export const DEFAULT_TIMELINE_DURATION_MS = 60_000
 const MAX_TIMELINE_DURATION_MS = 120_000
 const MAX_HISTORY_LENGTH = 100
+
+interface TimelineHistoryState {
+  actions: PlannedAction[]
+  switches: PlannedSwitchEvent[]
+}
+
+const cloneSwitches = (switches: PlannedSwitchEvent[]) => switches.map((event) => ({ ...event }))
 
 const initialActions: PlannedAction[] = [
   { id: 'action-1', resonatorSlotId: 'slot-1', actionId: 'changtai-gongji-1', startTimeMs: 0 },
@@ -37,17 +44,36 @@ export const useTimelineStore = defineStore('calculator-timeline', {
     durationMs: DEFAULT_TIMELINE_DURATION_MS,
     snapMs: 1,
     actions: cloneActions(initialActions),
-    past: [] as PlannedAction[][],
-    future: [] as PlannedAction[][],
+    switches: [] as PlannedSwitchEvent[],
+    past: [] as TimelineHistoryState[],
+    future: [] as TimelineHistoryState[],
     nextId: 5,
     lastAddedActionId: '',
     operationMessage: '' as '' | 'maximum-overlap' | 'no-visible-space',
   }),
   actions: {
     checkpoint() {
-      this.past.push(cloneActions(this.actions))
+      this.past.push({
+        actions: cloneActions(this.actions),
+        switches: cloneSwitches(this.switches),
+      })
       if (this.past.length > MAX_HISTORY_LENGTH) this.past.shift()
       this.future = []
+    },
+    addSwitch(toSlotId: string, timeMs: number) {
+      const ordered = this.switches
+        .filter((event) => event.timeMs <= timeMs)
+        .sort((left, right) => left.timeMs - right.timeMs)
+      const fromSlotId = ordered[ordered.length - 1]?.toSlotId ?? 'slot-1'
+      if (fromSlotId === toSlotId) return
+      this.checkpoint()
+      this.switches.push({
+        id: `switch-${this.nextId++}`,
+        fromSlotId,
+        toSlotId,
+        timeMs: preciseTime(timeMs),
+      })
+      this.switches.sort((left, right) => left.timeMs - right.timeMs)
     },
     addAction(actionId: string, resonatorSlotId = 'slot-1', startTimeMs?: number) {
       const lastStart = Math.max(-1, ...this.actions.map((action) => action.startTimeMs))
@@ -138,21 +164,30 @@ export const useTimelineStore = defineStore('calculator-timeline', {
       this.durationMs = Math.min(MAX_TIMELINE_DURATION_MS, document.durationMs)
       this.snapMs = 1
       this.actions = cloneActions(document.actions)
-      this.nextId = document.actions.length + 1
+      this.switches = cloneSwitches(document.switches ?? [])
+      this.nextId = document.actions.length + (document.switches?.length ?? 0) + 1
       this.past = []
       this.future = []
     },
     undo() {
       const previous = this.past.pop()
       if (!previous) return
-      this.future.push(cloneActions(this.actions))
-      this.actions = previous
+      this.future.push({
+        actions: cloneActions(this.actions),
+        switches: cloneSwitches(this.switches),
+      })
+      this.actions = cloneActions(previous.actions)
+      this.switches = cloneSwitches(previous.switches)
     },
     redo() {
       const next = this.future.pop()
       if (!next) return
-      this.past.push(cloneActions(this.actions))
-      this.actions = next
+      this.past.push({
+        actions: cloneActions(this.actions),
+        switches: cloneSwitches(this.switches),
+      })
+      this.actions = cloneActions(next.actions)
+      this.switches = cloneSwitches(next.switches)
     },
     document(): TimelineDocument {
       return {
@@ -163,6 +198,7 @@ export const useTimelineStore = defineStore('calculator-timeline', {
           ...action,
           resonatorSlotId: action.resonatorSlotId ?? 'slot-1',
         })),
+        switches: cloneSwitches(this.switches),
       }
     },
   },

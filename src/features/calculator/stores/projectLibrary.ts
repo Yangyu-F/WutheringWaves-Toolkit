@@ -70,6 +70,7 @@ export const useProjectLibraryStore = defineStore('project-library', {
           durationMs: DEFAULT_TIMELINE_DURATION_MS,
           snapMs: 1,
           actions: [],
+          switches: [],
         },
       }
     },
@@ -111,7 +112,11 @@ export const useProjectLibraryStore = defineStore('project-library', {
       }
       const projectStore = useCalculatorProjectStore()
       const timelineStore = useTimelineStore()
-      Object.assign(projectStore.settings, structuredClone(toRaw(project.settings)))
+      Object.assign(
+        projectStore.settings,
+        createDefaultProjectSettings(),
+        structuredClone(toRaw(project.settings)),
+      )
       Object.assign(projectStore.loadout, structuredClone(toRaw(project.loadout)))
       timelineStore.replaceDocument(structuredClone(toRaw(project.timeline)))
       this.activeProjectId = id

@@ -1,4 +1,4 @@
-import { ref, type Ref } from 'vue'
+import { computed, ref, type Ref } from 'vue'
 import { useTimelineStore } from '../../../stores/timeline'
 import { useTimelineViewportStore } from '../../../stores/timelineViewport'
 import { TIMELINE_INSET } from './useTimelineViewport'
@@ -6,7 +6,10 @@ import { TIMELINE_INSET } from './useTimelineViewport'
 export function useTimelinePlayhead(viewport: Ref<HTMLElement | undefined>) {
   const timeline = useTimelineStore()
   const view = useTimelineViewportStore()
-  const playheadMs = ref(0)
+  const playheadMs = computed({
+    get: () => view.playheadMs,
+    set: (value: number) => view.setPlayhead(value, timeline.durationMs),
+  })
   const playheadDragging = ref(false)
 
   function pointerTime(event: PointerEvent) {

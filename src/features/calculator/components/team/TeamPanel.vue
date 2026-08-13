@@ -41,6 +41,12 @@ const { t } = useI18n()
           <option v-for="value in 5" :key="value" :value="value">{{ value }}</option>
         </select></label
       >
+      <label
+        >{{ t('workspace.initialLiuxiang')
+        }}<select v-model.number="project.settings.initialLiuxiang">
+          <option v-for="value in 4" :key="value" :value="value - 1">{{ value - 1 }}</option>
+        </select></label
+      >
     </article>
     <button
       v-for="slot in [2, 3]"

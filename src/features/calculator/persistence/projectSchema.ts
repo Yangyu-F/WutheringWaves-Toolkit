@@ -9,6 +9,7 @@ const settingsSchema = z.object({
   enemyLevel: z.number().int().min(1).max(200),
   aeroResistancePercent: z.number().min(-100).max(500),
   criticalMode: z.enum(['expected', 'critical', 'normal']),
+  initialLiuxiang: z.number().int().min(0).max(3).default(0),
 })
 const teamSlotSchema = z.object({
   id: z.enum(['slot-1', 'slot-2', 'slot-3']),
@@ -41,6 +42,7 @@ export interface ProjectSettings {
   enemyLevel: number
   aeroResistancePercent: number
   criticalMode: CriticalMode
+  initialLiuxiang: number
 }
 export type CalculatorProject = z.infer<typeof calculatorProjectSchema>
 

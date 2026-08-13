@@ -12,7 +12,9 @@ describe('action compiler', () => {
   })
 
   it('contains every damage-dealing Yangyang action cross-checked for Phase 1', () => {
-    expect(yangyangActions.map((action) => action.id)).toEqual([
+    expect(
+      yangyangActions.filter((action) => action.hits.length > 0).map((action) => action.id),
+    ).toEqual([
       'changtai-gongji-1',
       'changtai-gongji-2',
       'changtai-gongji-3',

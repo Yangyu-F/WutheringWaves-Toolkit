@@ -1,0 +1,11 @@
+{
+  "3.5": {
+    "excluded": {
+      "resonators": ["清宵", "景燃"],
+      "weapons": [],
+      "echoes": [],
+      "sonatas": []
+    },
+    "reason": "The official catalogue already exposes the two announced Version 3.6 resonators. They are retained in the raw snapshot but excluded from the Version 3.5 candidate dataset."
+  }
+}

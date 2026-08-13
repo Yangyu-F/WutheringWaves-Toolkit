@@ -1,4 +1,10 @@
-import type { CombatStats, CriticalMode, DamageBreakdown, DamageType } from '../../domain/combat'
+import type {
+  CombatStats,
+  CriticalMode,
+  DamageBreakdown,
+  DamageType,
+  ScalingStat,
+} from '../../domain/combat'
 
 export const resistanceFormulaVerification = {
   negative: 'cross-checked',
@@ -38,6 +44,7 @@ export interface CalculateDamageInput {
   stats: CombatStats
   damageType: DamageType
   multiplier: number
+  scalingStat?: ScalingStat
   criticalMode: CriticalMode
   defenseReduction?: number
   resistanceReduction?: number
@@ -45,7 +52,9 @@ export interface CalculateDamageInput {
 
 export function calculateDamage(input: CalculateDamageInput): DamageBreakdown {
   const multiplierBonusMultiplier = 1 + (input.stats.multiplierBonus ?? 0)
-  const rawDamage = input.stats.attack * input.multiplier * multiplierBonusMultiplier
+  const scalingStat = input.scalingStat ?? 'attack'
+  const scalingBase = input.stats[scalingStat] ?? 0
+  const rawDamage = scalingBase * input.multiplier * multiplierBonusMultiplier
   const damageBonusMultiplier =
     1 +
     input.stats.aeroDamageBonus +
@@ -73,7 +82,7 @@ export function calculateDamage(input: CalculateDamageInput): DamageBreakdown {
     resistanceMultiplier
 
   return {
-    scalingBase: input.stats.attack,
+    scalingBase,
     skillMultiplier: input.multiplier,
     rawDamage,
     multiplierBonusMultiplier,

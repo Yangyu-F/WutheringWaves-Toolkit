@@ -29,6 +29,7 @@ function migrateV1(raw: unknown): TimelineDocument | undefined {
     durationMs: parsed.data.durationMs,
     snapMs: parsed.data.snapMs,
     actions: actions.map((action) => ({ ...action, resonatorSlotId: 'slot-1' })),
+    switches: [],
   }
 }
 

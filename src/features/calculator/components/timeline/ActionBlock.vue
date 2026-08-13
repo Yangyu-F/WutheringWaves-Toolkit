@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import type { PlannedAction } from '../../../../domain/combat'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 defineProps<{
   action: PlannedAction
@@ -14,6 +17,9 @@ defineProps<{
   selected: boolean
   newlyAdded: boolean
   trimmed: boolean
+  resourceChange: number
+  hasHealing: boolean
+  warning: boolean
 }>()
 defineEmits<{
   select: [id: string]
@@ -26,7 +32,12 @@ defineEmits<{
   <button
     type="button"
     class="timeline-action"
-    :class="{ 'is-selected': selected, 'is-new': newlyAdded, 'is-trimmed': trimmed }"
+    :class="{
+      'is-selected': selected,
+      'is-new': newlyAdded,
+      'is-trimmed': trimmed,
+      'has-warning': warning,
+    }"
     :style="{
       left: `${left}px`,
       width: `${width}px`,
@@ -39,11 +50,16 @@ defineEmits<{
     @click="$emit('select', action.id)"
   >
     <span class="action-kept" :style="{ width: `${keptWidth}px` }" />
+    <span v-if="resourceChange" class="action-mechanic-badge">
+      {{ resourceChange > 0 ? `+${resourceChange}` : resourceChange }}
+    </span>
+    <span v-if="hasHealing" class="action-healing-badge">+</span>
+    <span v-if="warning" class="action-warning-badge">!</span>
     <span class="action-tooltip">
       <b>{{ name }}</b>
       <small>
         {{ (action.startTimeMs / 1000).toFixed(3) }}s-{{ (endTimeMs / 1000).toFixed(3) }}s ·
-        {{ hitOffsets.length }} Hits
+        {{ t('workspace.hits', { count: hitOffsets.length }) }}
       </small>
     </span>
     <i

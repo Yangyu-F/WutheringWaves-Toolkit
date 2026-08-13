@@ -96,6 +96,7 @@ export function compileTimeline(
           damageType: definition.damageType,
           element: definition.element,
           multiplier: hit.multiplier,
+          scalingStat: hit.scalingStat ?? 'attack',
           timeMs: hitTimeMs(window.startTimeMs, index),
           sequence: sequence++,
         }))

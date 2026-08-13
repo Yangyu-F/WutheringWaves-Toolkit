@@ -6,6 +6,12 @@ import {
   MIN_TIMELINE_ZOOM,
   useTimelineViewportStore,
 } from '../../../stores/timelineViewport'
+import {
+  DEFAULT_ACTION_LANES,
+  MECHANIC_TRACK_HEIGHT,
+  RESONATOR_TRACK_COUNT,
+  TIMELINE_RULER_HEIGHT,
+} from '../../../layout/timelineDimensions'
 
 export const TIMELINE_INSET = 12
 
@@ -15,7 +21,16 @@ export function useTimelineViewport(getWindows: () => ActionWindow[]) {
   const viewport = ref<HTMLElement>()
   const viewportHeight = ref(0)
   const width = computed(() => (timeline.durationMs / 1000) * view.zoomPxPerSecond)
-  const baseActionHeight = computed(() => Math.max(42, Math.ceil((viewportHeight.value - 27) / 9)))
+  const baseActionHeight = computed(() => {
+    const mechanicTracksHeight = MECHANIC_TRACK_HEIGHT * RESONATOR_TRACK_COUNT
+    const actionLaneCount = DEFAULT_ACTION_LANES * RESONATOR_TRACK_COUNT
+    return Math.max(
+      34,
+      Math.floor(
+        (viewportHeight.value - TIMELINE_RULER_HEIGHT - mechanicTracksHeight) / actionLaneCount,
+      ),
+    )
+  })
   let resizeObserver: ResizeObserver | undefined
 
   function labelWidth() {

@@ -21,6 +21,7 @@
     "wiki:process": "tsx scripts/wiki/process-kuro-wiki.ts",
     "wiki:community-snapshot": "tsx scripts/wiki/download-community-wikis.ts",
     "wiki:wikiwiki-resonators": "tsx scripts/wiki/download-wikiwiki-resonators.ts",
+    "wiki:extract-candidates": "tsx scripts/wiki/extract-candidates.ts",
     "wiki:candidates": "tsx scripts/wiki/normalize-candidates.ts"
   },
   "dependencies": {
@@ -42,6 +43,7 @@
     "globals": "^16.5.0",
     "jsdom": "^27.2.0",
     "npm-run-all2": "^8.0.4",
+    "pinyin-pro": "^3.29.0",
     "prettier": "^3.7.4",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",

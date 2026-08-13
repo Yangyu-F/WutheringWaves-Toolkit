@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref } from 'vue'
 import { yangyangActions } from '../../../../data/versions/v3_5/phaseOne'
-import type { ActionDefinition } from '../../../../domain/combat'
+import type { ActionDefinition, ResourcePoint, TimelineDiagnostic } from '../../../../domain/combat'
 import { useTimelineStore } from '../../stores/timeline'
 import { useTimelineViewportStore } from '../../stores/timelineViewport'
 import { useI18n } from 'vue-i18n'
 import EmptyState from '../ui/EmptyState.vue'
 
 const timeline = useTimelineStore()
+const props = defineProps<{ resources: ResourcePoint[]; diagnostics: TimelineDiagnostic[] }>()
 const emit = defineEmits<{ requestTeam: [] }>()
 const view = useTimelineViewportStore()
 const { t } = useI18n()
@@ -42,6 +43,46 @@ function matches(action: ActionDefinition, category: string) {
 const skills = computed(() => yangyangActions.filter((action) => matches(action, active.value)))
 const isConfigured = computed(() => view.activeResonatorSlotId === 'slot-1')
 const shortName = (name: string) => name.split('·').slice(-1)[0] ?? name
+const currentLiuxiang = computed(() => {
+  const points = props.resources
+    .filter(
+      (point) =>
+        point.resonatorSlotId === view.activeResonatorSlotId &&
+        point.resourceId === 'liuxiang' &&
+        point.timeMs <= view.playheadMs,
+    )
+    .sort((left, right) => left.timeMs - right.timeMs)
+  return points[points.length - 1]?.value ?? 0
+})
+const currentActiveSlotId = computed(() => {
+  const switches = timeline.switches
+    .filter((event) => event.timeMs <= view.playheadMs)
+    .sort((left, right) => left.timeMs - right.timeMs)
+  return switches[switches.length - 1]?.toSlotId ?? 'slot-1'
+})
+function unavailableReason(skill: ActionDefinition) {
+  const requirement = skill.resourceRequirements?.find(
+    (item) => item.resourceId === 'liuxiang' && currentLiuxiang.value < item.minimumValue,
+  )
+  if (requirement)
+    return t('workspace.requiresResource', {
+      value: requirement.minimumValue,
+      resource: t('workspace.resources.liuxiang'),
+    })
+  const previous = [...timeline.actions]
+    .filter(
+      (action) =>
+        action.actionId === skill.id &&
+        (action.resonatorSlotId ?? 'slot-1') === view.activeResonatorSlotId &&
+        action.startTimeMs <= view.playheadMs,
+    )
+    .sort((left, right) => right.startTimeMs - left.startTimeMs)[0]
+  if (previous && skill.cooldownMs && previous.startTimeMs + skill.cooldownMs > view.playheadMs)
+    return t('workspace.cooldownUntil', {
+      time: ((previous.startTimeMs + skill.cooldownMs) / 1000).toFixed(2),
+    })
+  return ''
+}
 function addSkill(skill: ActionDefinition) {
   timeline.addActionToViewport(
     skill.id,
@@ -69,19 +110,37 @@ function addSkill(skill: ActionDefinition) {
       </button>
     </nav>
     <div v-if="isConfigured" class="skill-list">
+      <p class="skill-state-summary">
+        {{ (view.playheadMs / 1000).toFixed(3) }}s · {{ t('workspace.resources.liuxiang') }}
+        {{ currentLiuxiang }}/3
+      </p>
+      <button
+        class="skill-switch-button"
+        type="button"
+        :disabled="currentActiveSlotId === view.activeResonatorSlotId"
+        @click="timeline.addSwitch(view.activeResonatorSlotId, view.playheadMs)"
+      >
+        <span
+          ><strong>{{ t('workspace.switchToSelected') }}</strong
+          ><small>{{
+            t('workspace.currentActiveSlot', { slot: currentActiveSlotId.slice(-1) })
+          }}</small></span
+        >
+      </button>
       <button
         v-for="skill in skills"
         :key="skill.id"
         type="button"
-        :class="{ 'is-added': addedSkillId === skill.id }"
+        :class="{ 'is-added': addedSkillId === skill.id, 'has-warning': unavailableReason(skill) }"
         @click="addSkill(skill)"
       >
         <span
           ><strong>{{ shortName(skill.name) }}</strong
-          ><small>{{ t('workspace.hits', { count: skill.hits.length }) }}</small></span
+          ><small>{{
+            unavailableReason(skill) || t('workspace.hits', { count: skill.hits.length })
+          }}</small></span
         >
       </button>
-      <p v-if="!skills.length">{{ t('workspace.emptyCategory') }}</p>
     </div>
     <EmptyState
       v-else

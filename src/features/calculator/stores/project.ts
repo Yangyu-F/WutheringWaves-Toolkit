@@ -9,6 +9,7 @@ export const createDefaultProjectSettings = () => ({
   enemyLevel: 90,
   aeroResistancePercent: 10,
   criticalMode: 'expected' as CriticalMode,
+  initialLiuxiang: 0,
 })
 
 export const useCalculatorProjectStore = defineStore('calculator-project', () => {

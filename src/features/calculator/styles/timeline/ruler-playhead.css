@@ -1,6 +1,5 @@
 .timeline-playhead {
   position: absolute;
-  z-index: var(--z-playhead);
   top: 0;
   bottom: 0;
   left: calc(var(--label-width) + var(--timeline-inset) + var(--playhead-x));
@@ -11,11 +10,21 @@
   padding: 0;
   cursor: ew-resize;
   border: 0;
-  border-left: 1px solid var(--accent);
   background: transparent;
+}
+.timeline-playhead::before {
+  position: absolute;
+  z-index: var(--z-playhead-line);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  border-left: 1px solid var(--accent);
+  content: '';
+  pointer-events: none;
 }
 .timeline-playhead-marker {
   position: sticky;
+  z-index: var(--z-playhead);
   top: 0;
   display: block;
   width: 7px;

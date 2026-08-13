@@ -88,6 +88,66 @@
 .resonator-track:nth-child(4n + 2) {
   background: var(--track-alt);
 }
-.resonator-track:has(.timeline-action:hover) {
+.resonator-track:has(.timeline-action:hover),
+.resonator-track:has(.ui-tooltip[data-tooltip]:hover) {
   z-index: var(--z-action);
+}
+.mechanic-strip {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: visible;
+  border-top: 1px solid var(--divider);
+  background: color-mix(in srgb, var(--track) 76%, var(--canvas));
+}
+.mechanic-resource-point,
+.mechanic-healing-point {
+  position: absolute;
+  top: 2px;
+  display: grid;
+  min-width: 16px;
+  height: 14px;
+  padding: 0 3px;
+  place-items: center;
+  color: var(--canvas);
+  border-radius: 8px;
+  background: var(--slot-one);
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 700;
+  transform: translateX(-50%);
+}
+.mechanic-derived-point {
+  position: absolute;
+  top: 5px;
+  width: 8px;
+  height: 8px;
+  border: 1px solid var(--canvas);
+  background: var(--accent-hover);
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  transform: translateX(-50%);
+}
+.mechanic-resource-point.is-cost {
+  color: var(--text);
+  background: var(--danger);
+}
+.mechanic-healing-point {
+  color: var(--canvas);
+  background: var(--success, #86b875);
+}
+.mechanic-status-interval {
+  position: absolute;
+  top: 2px;
+  height: 14px;
+  overflow: hidden;
+  padding: 0 5px;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--control-active);
+  font-size: 9px;
+  line-height: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

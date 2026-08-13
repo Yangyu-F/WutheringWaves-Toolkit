@@ -12,9 +12,10 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  left: -4px;
-  width: max(10px, calc(100% + 8px));
+  left: 50%;
+  width: max(20px, calc(100% + 8px));
   content: '';
+  transform: translateX(-50%);
 }
 .action-kept {
   position: absolute;
@@ -65,8 +66,7 @@
   font-size: 10px;
   font-weight: 400;
 }
-.timeline-action:hover,
-.timeline-action.is-selected {
+.timeline-action:hover {
   z-index: var(--z-action);
 }
 .timeline-action:hover .action-tooltip {
@@ -125,6 +125,40 @@
 }
 .timeline-action.is-trimmed .action-kept {
   border-style: dashed;
+}
+.timeline-action.has-warning .action-kept {
+  border-color: var(--danger);
+  border-style: dashed;
+}
+.action-mechanic-badge,
+.action-healing-badge,
+.action-warning-badge {
+  position: absolute;
+  z-index: 5;
+  top: 2px;
+  display: grid;
+  min-width: 14px;
+  height: 14px;
+  padding: 0 3px;
+  place-items: center;
+  color: var(--canvas);
+  border-radius: 7px;
+  background: var(--slot-one);
+  font-size: 8px;
+  font-weight: 700;
+  pointer-events: none;
+}
+.action-mechanic-badge {
+  left: 3px;
+}
+.action-healing-badge {
+  left: 20px;
+  background: var(--success, #86b875);
+}
+.action-warning-badge {
+  right: 3px;
+  color: var(--text);
+  background: var(--danger);
 }
 .trim-handle {
   position: absolute;

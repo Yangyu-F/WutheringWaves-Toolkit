@@ -30,9 +30,16 @@ function fixture(): CalculatorProject {
       enemyLevel: 90,
       aeroResistancePercent: 10,
       criticalMode: 'expected',
+      initialLiuxiang: 0,
     },
     loadout: structuredClone(defaultPhaseOneLoadout),
-    timeline: { schemaVersion: 2, durationMs: 30_000, snapMs: 100, actions: [] },
+    timeline: {
+      schemaVersion: 2,
+      durationMs: 30_000,
+      snapMs: 100,
+      actions: [],
+      switches: [{ id: 'switch-1', fromSlotId: 'slot-1', toSlotId: 'slot-2', timeMs: 1_000 }],
+    },
   }
 }
 

@@ -21,6 +21,7 @@ const groups = [
   { id: 'enemy', tone: 'debuff' },
 ] as const
 const { t } = useI18n()
+const effectName = (id: string) => t(`workspace.effectNames.${id}`)
 const labels = [
   () => t('workspace.yangyangBuff'),
   () => t('workspace.slotBuff', { slot: 2 }),
@@ -28,17 +29,35 @@ const labels = [
   () => t('workspace.teamBuff'),
   () => t('workspace.enemyDebuff'),
 ]
-function groupBuffs(groupId: string) {
+function allGroupBuffs(groupId: string) {
+  const matching = props.buffs
+    .filter((buff) => buff.targetTrack === groupId)
+    .sort((left, right) => left.startTimeMs - right.startTimeMs)
+  const merged: BuffInterval[] = []
+  for (const buff of matching) {
+    const previous = merged[merged.length - 1]
+    if (
+      previous &&
+      previous.id === buff.id &&
+      previous.sourceActionId === buff.sourceActionId &&
+      previous.endTimeMs >= buff.startTimeMs
+    ) {
+      previous.endTimeMs = Math.max(previous.endTimeMs, buff.endTimeMs)
+      previous.stacks = Math.max(previous.stacks, buff.stacks)
+    } else merged.push({ ...buff })
+  }
+  return merged
+}
+function visibleGroupBuffs(groupId: string) {
   const minimum = props.viewportStartMs - 1_000
   const maximum = props.viewportStartMs + props.viewportDurationMs + 1_000
-  return props.buffs.filter(
-    (buff) =>
-      buff.targetTrack === groupId && buff.endTimeMs >= minimum && buff.startTimeMs <= maximum,
+  return allGroupBuffs(groupId).filter(
+    (buff) => buff.endTimeMs >= minimum && buff.startTimeMs <= maximum,
   )
 }
 function placements(groupId: string) {
   return assignActionLanes(
-    groupBuffs(groupId).map((buff, index) => ({
+    allGroupBuffs(groupId).map((buff, index) => ({
       id: `${buff.id}-${index}`,
       startTimeMs: buff.startTimeMs,
       endTimeMs: buff.endTimeMs,
@@ -46,10 +65,15 @@ function placements(groupId: string) {
   )
 }
 function laneFor(groupId: string, index: number) {
+  const buff = visibleGroupBuffs(groupId)[index]
+  const allIndex = allGroupBuffs(groupId).findIndex(
+    (item) =>
+      item.id === buff?.id &&
+      item.sourceActionId === buff?.sourceActionId &&
+      item.startTimeMs === buff?.startTimeMs,
+  )
   return (
-    placements(groupId).find(
-      (item) => item.actionId === `${groupBuffs(groupId)[index]?.id}-${index}`,
-    )?.laneIndex ?? 0
+    placements(groupId).find((item) => item.actionId === `${buff?.id}-${allIndex}`)?.laneIndex ?? 0
   )
 }
 const rowHeights = computed(() =>
@@ -81,9 +105,9 @@ const rowHeights = computed(() =>
         :class="[`is-${group.tone}`, `group-${group.id}`]"
         :style="{ width: `${width}px`, height: `${rowHeights[group.id]}px` }"
       >
-        <template v-if="groupBuffs(group.id).length">
+        <template v-if="visibleGroupBuffs(group.id).length">
           <span
-            v-for="(buff, index) in groupBuffs(group.id)"
+            v-for="(buff, index) in visibleGroupBuffs(group.id)"
             :key="buff.id + index"
             :style="{
               left: `${inset + (buff.startTimeMs / 1000) * zoomPxPerSecond}px`,
@@ -91,13 +115,10 @@ const rowHeights = computed(() =>
               top: `${2 + laneFor(group.id, index) * buffHeight}px`,
               height: `${buffHeight}px`,
             }"
-            ><b>{{ buff.id }}</b
+            ><b>{{ effectName(buff.id) }}</b
             ><small>{{ ((buff.endTimeMs - buff.startTimeMs) / 1000).toFixed(1) }}s</small></span
           >
         </template>
-        <p v-if="!groupBuffs(group.id).length">
-          {{ t('workspace.noEffect') }}
-        </p>
       </div>
     </div>
   </div>

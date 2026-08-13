@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto'
 import { execFile } from 'node:child_process'
-import { mkdir, writeFile } from 'node:fs/promises'
+import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { promisify } from 'node:util'
 
@@ -42,6 +42,7 @@ interface CatalogueRecord {
   content?: {
     linkConfig?: { entryId?: string }
     linkId?: string
+    linkUrl?: string
   }
 }
 
@@ -205,7 +206,8 @@ function catalogueRecords(envelope: ApiEnvelope): CatalogueRecord[] {
 }
 
 function recordEntryId(record: CatalogueRecord): string | undefined {
-  return record.content?.linkConfig?.entryId ?? record.content?.linkId
+  const linkedEntryId = record.content?.linkUrl?.match(/\/item\/(\d+)/)?.[1]
+  return linkedEntryId || record.content?.linkConfig?.entryId || record.content?.linkId || undefined
 }
 
 function serialize(value: unknown): string {
@@ -297,11 +299,24 @@ async function main() {
   })
 
   for (const [index, entry] of uniqueEntries.entries()) {
-    await delay(delayMs)
     const directory = resolve(outputDirectory, 'entries', entry.entityType)
     await mkdir(directory, { recursive: true })
-    const envelope = await fetchEntry(entry.entryId, retries)
     const filename = `${entry.entryId}.json`
+    const existing = await readFile(resolve(directory, filename), 'utf8').catch(() => undefined)
+    if (existing) {
+      const envelope = JSON.parse(existing) as ApiEnvelope
+      if (envelope.code === 200 && envelope.success === true) {
+        entrySnapshots.push({
+          ...entry,
+          path: `entries/${entry.entityType}/${filename}`,
+          sha256: createHash('sha256').update(existing).digest('hex'),
+          bytes: Buffer.byteLength(existing),
+        })
+        continue
+      }
+    }
+    await delay(delayMs)
+    const envelope = await fetchEntry(entry.entryId, retries)
     const saved = await saveJson(directory, filename, envelope)
     entrySnapshots.push({
       ...entry,

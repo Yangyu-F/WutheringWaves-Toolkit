@@ -8,11 +8,19 @@ const timelineItemSchema = z.object({
   trimmedEndTimeMs: z.number().int().nonnegative().optional(),
 })
 
+const switchItemSchema = z.object({
+  id: z.string().min(1),
+  fromSlotId: z.string().min(1),
+  toSlotId: z.string().min(1),
+  timeMs: z.number().int().nonnegative(),
+})
+
 export const timelineDocumentSchema = z.object({
   schemaVersion: z.literal(2),
   durationMs: z.number().int().min(1_000).max(300_000),
   snapMs: z.number().int().min(1).max(5_000),
   actions: z.array(timelineItemSchema).max(2_000),
+  switches: z.array(switchItemSchema).max(2_000).default([]),
 })
 
 export const timelineDocumentV1Schema = z.object({

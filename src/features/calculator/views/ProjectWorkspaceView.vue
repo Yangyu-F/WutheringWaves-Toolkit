@@ -13,9 +13,11 @@ import ScrollRegion from '../components/ui/ScrollRegion.vue'
 import UtilityPanel from '../components/utility/UtilityPanel.vue'
 import { useCalculatorSimulation } from '../composables/useCalculatorSimulation'
 import { useProjectLibraryStore } from '../stores/projectLibrary'
+import { useTimelineViewportStore } from '../stores/timelineViewport'
 import { useI18n } from 'vue-i18n'
 
 const library = useProjectLibraryStore()
+const timelineView = useTimelineViewportStore()
 const { t } = useI18n()
 const { timelineStore, settings, loadout, result } = useCalculatorSimulation()
 const selectedActionId = ref<string>()
@@ -46,6 +48,11 @@ function removeSelectedAction(id: string) {
   timelineStore.removeAction(id)
   selectedActionId.value = next?.id
 }
+function focusDiagnostic(actionId: string, timeMs: number) {
+  selectedActionId.value = actionId || undefined
+  timelineView.setPlayhead(timeMs, timelineStore.durationMs)
+  utilityPanel.value = 'inspector'
+}
 watchEffect(() => {
   document.title = t('workspace.productName')
 })
@@ -54,7 +61,13 @@ onMounted(() => {
   void library.initialize()
 })
 watch(
-  [() => timelineStore.actions, () => timelineStore.durationMs, () => settings, () => loadout],
+  [
+    () => timelineStore.actions,
+    () => timelineStore.switches,
+    () => timelineStore.durationMs,
+    () => settings,
+    () => loadout,
+  ],
   () => {
     if (!library.activeProjectId) return
     library.markDirty()
@@ -91,7 +104,10 @@ watch(
           <TeamPanel /><EchoLoadoutPanel />
         </ScrollRegion>
         <ScrollRegion v-else class="sidebar-mode-content"
-          ><SkillLibrary @request-team="leftPanel = 'team'"
+          ><SkillLibrary
+            :resources="result.resourceCurve"
+            :diagnostics="result.timeline.diagnostics"
+            @request-team="leftPanel = 'team'"
         /></ScrollRegion>
       </PanelShell>
     </aside>
@@ -100,6 +116,10 @@ watch(
         :windows="result.timeline.windows"
         :hits="result.hits"
         :buffs="result.buffIntervals"
+        :resources="result.resourceCurve"
+        :mechanic-events="result.mechanicEvents"
+        :diagnostics="result.timeline.diagnostics"
+        :statuses="result.statusIntervals"
         :selected-action-id="selectedActionId"
         @select="selectedActionId = $event"
       />
@@ -111,6 +131,7 @@ watch(
       :selected-action-id="selectedActionId"
       :natural-end-time-ms="selectedWindow?.naturalEndTimeMs"
       @delete="removeSelectedAction"
+      @focus-diagnostic="focusDiagnostic"
     />
     <WorkspaceRail
       side="right"
